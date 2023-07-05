@@ -1,0 +1,1 @@
+export const navigationRef = React.createRef(null);
