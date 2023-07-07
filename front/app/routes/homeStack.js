@@ -1,31 +1,42 @@
-import {createStackNavigator} from "@react-navigation/stack";
-import {useColorScheme, View} from "react-native";
+import {View, useColorScheme} from "react-native";
 import {NavigationContainer} from "@react-navigation/native";
+import {createStackNavigator, TransitionPresets} from "@react-navigation/stack";
+
 import Constants from 'expo-constants';
 import {StatusBar} from "expo-status-bar";
 
+import {LOGIN, SPLASHSCREEN} from "../utils/consts/consts";
 import {navigationRef} from "../utils/RootNavigator";
-import {LOGIN} from "../utils/consts/consts";
+
 import LoginScreen from "../screens/LoginScreen";
+import SplashScreen from "../screens/SplashScreen";
 
 const Stack = createStackNavigator();
 
 const statusBarHeight = Constants.statusBarHeight;
+
 export default function homeStack(){
     const colorScheme = useColorScheme();
+
     return (
-        <View style={{
-            flex: 1,
+        <View style={{ flex: 1,
             paddingTop: statusBarHeight,
-            backgroundColor: colorScheme === 'light' ? '#fff' : '#000'
-        }}>
-            <StatusBar hidden={false}/>
+            backgroundColor: colorScheme === 'light' ? '#fff' : '#000'}}>
+            <StatusBar
+                hidden={false}
+            />
             <View style={{flex: 1}}>
-                {/*<AppLoader ref={loaderRef} color={"white"}/>*/}
-                {/*<DialogFancyAlerts ref={showRefDialog}/>*/}
-                {/*<MessageFancyAlerts ref={showRefMessage}/>*/}
                 <NavigationContainer ref={navigationRef}>
-                    <Stack.Navigator initalRouteName={LOGIN}>
+                    <Stack.Navigator
+                        screenOptions={{
+                            ...TransitionPresets.SlideFromRightIOS,
+                            headerShown: false
+                        }}
+                        initalRouteName={LOGIN}>
+                        {/*<Stack.Screen*/}
+                        {/*    name={SPLASHSCREEN}*/}
+                        {/*    component={SplashScreen}*/}
+                        {/*/>*/}
                         <Stack.Screen
                             name={LOGIN}
                             component={LoginScreen}
