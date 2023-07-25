@@ -5,11 +5,14 @@ import {createStackNavigator, TransitionPresets} from "@react-navigation/stack";
 import Constants from 'expo-constants';
 import {StatusBar} from "expo-status-bar";
 
-import {LOGIN, SPLASHSCREEN} from "../utils/consts/consts";
+import {HOME, LOGIN, SPLASHSCREEN, TRAVELDIARYSCREEN, USERSETTINGS} from "../utils/consts/consts";
 import {navigationRef} from "../utils/RootNavigator";
 
 import LoginScreen from "../screens/LoginScreen";
 import SplashScreen from "../screens/SplashScreen";
+import HomeScreen from "../screens/HomeScreen";
+import UserSettings from "../screens/UserSettings";
+import TravelDiaryScreen from "../screens/TravelDiaryScreen";
 
 const Stack = createStackNavigator();
 
@@ -21,7 +24,7 @@ export default function homeStack(){
     return (
         <View style={{ flex: 1,
             paddingTop: statusBarHeight,
-            backgroundColor: colorScheme === 'light' ? '#fff' : '#000'}}>
+            }}>
             <StatusBar
                 hidden={false}
             />
@@ -29,7 +32,6 @@ export default function homeStack(){
                 <NavigationContainer ref={navigationRef}>
                     <Stack.Navigator
                         screenOptions={{
-                            ...TransitionPresets.SlideFromRightIOS,
                             headerShown: false
                         }}
                         initalRouteName={LOGIN}>
@@ -40,6 +42,18 @@ export default function homeStack(){
                         <Stack.Screen
                             name={LOGIN}
                             component={LoginScreen}
+                        />
+                        <Stack.Screen
+                            name={HOME}
+                            component={HomeScreen}
+                        />
+                        <Stack.Screen
+                            name={USERSETTINGS}
+                            component={UserSettings}
+                        />
+                        <Stack.Screen
+                            name={TRAVELDIARYSCREEN}
+                            component={TravelDiaryScreen}
                         />
                     </Stack.Navigator>
                 </NavigationContainer>

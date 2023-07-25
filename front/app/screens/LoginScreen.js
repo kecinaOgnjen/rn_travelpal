@@ -1,103 +1,160 @@
-import {View, Text, SafeAreaView, StyleSheet, Image, ActivityIndicator, TouchableOpacity} from "react-native";
-import {Fumi} from "react-native-textinput-effects";
+import React, { useState, useRef } from 'react';
+import {
+    View,
+    Text,
+    SafeAreaView,
+    StyleSheet,
+    Image,
+    ActivityIndicator,
+    TouchableOpacity,
+} from 'react-native';
+import { Fumi } from 'react-native-textinput-effects';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import {useRef, useState} from "react";
+import { useNavigation } from '@react-navigation/native'; // Importujemo hook za navigaciju
+import { showAlert } from '../components/Alerts/MessageFancyAlerts';
+import axiosInstance from '../api/api';
+import { navigateCloseCurrent } from '../utils/RootNavigator';
+import { HOME } from '../utils/consts/consts';
 
-export default function LoginScreen() {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-
+const LoginScreen = () => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
     const [loginLoading, setLoginLoading] = useState(false);
     const refPassword = useRef();
+    const navigation = useNavigation(); // Koristimo hook za navigaciju
+
+    const login = async () => {
+        if (username === '' && password === '') {
+            showAlert(
+                'Morate unijeti korisničko ime i lozinku',
+                () => null,
+                'warning',
+                '#ff0000'
+            );
+            return;
+        }
+
+        if (username === '') {
+            showAlert('Morate unijeti korisničko ime', () => null, 'warning', '#ff0000');
+            return;
+        }
+
+        if (password === '') {
+            showAlert('Morate unijeti lozinku', () => null, 'warning', '#ff0000');
+            return;
+        }
+
+        setLoginLoading(true);
+
+        try {
+            const response = await axiosInstance.post('/login', {
+                username: username,
+                password: password,
+            });
+            console.log(response.data);
+
+            if (response.data.isSuccess === true) {
+                navigateCloseCurrent(HOME);
+            } else {
+                console.log('neuspjeh');
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoginLoading(false);
+        }
+    };
 
     return (
-        <SafeAreaView
-            style={{
-                backgroundColor: "#000",
-                flex: 1
-            }}
-        >
+        <SafeAreaView style={{ backgroundColor: '#000', flex: 1 }}>
             <View style={styles.container}>
-               <View style={styles.registerForm}>
-                   <View style={styles.imageView}>
-                       <Image
-                           style={styles.logo}
-                           source={require("../assets/logo.png")}
-                       />
-                   </View>
-                   <View style={styles.inputFieldsForm}>
-                       <Fumi
-                           style={[
-                               styles.fumiStyle,
-                               {borderColor: "#fff"}
-                           ]}
-                           keyboardType='numeric'
-                           label="Username"
-                           iconClass={FontAwesomeIcon}
-                           labelStyle={{color: '#fff'}}
-                           inputStyle={{color: '#fff'}}
-                           iconName={'user'}
-                           iconColor={'#fff'}
-                           iconSize={20}
-                           iconWidth={40}
-                           returnKeyType="next"
-                           onChangeText={(username) => setUsername(username)}
-                           onSubmitEditing={() => {
-                               refPassword.current.focus()
-                           }}
-                       />
-                       <Fumi
-                           ref={refPassword}
-                           style={[
-                               styles.fumiStyle,
-                               {borderColor: "#fff"}
-                           ]}
-                           label={"Password"}
-                           iconClass={FontAwesomeIcon}
-                           labelStyle={{color: '#fff'}}
-                           inputStyle={{color: '#fff'}}
-                           iconName={'lock'}
-                           iconColor={'#fff'}
-                           iconSize={20}
-                           iconWidth={40}
-                           secureTextEntry={true}
-                           onChangeText={(password) => setPassword(password)}
-                           passiveIconColor={'#adadad'}
-                       />
-                       <TouchableOpacity
-                           style={[
-                               styles.btnNext,
-                               {
-                                   backgroundColor: "#2196f3",
-                               },
-                           ]}
-                           disabled={loginLoading}
-                           // onPress={async () => await login()}
-                       >
-                           {
-                               loginLoading ?
-                                   <ActivityIndicator size="small" color="white"/>
-                                   :
-                                   <Text style={styles.textNext}>{"Login"}</Text>
-                           }
-                       </TouchableOpacity>
-                   </View>
-                   <View style={{
-                       flex: 1,
-                       alignItems: "center",
-                       justifyContent: "flex-end"
-                   }}>
-                       <Text
-                           style={{color: "#fff"}}
-                           selectable={true}
-                       >
-                           {/*{expoToken}*/}
-                       </Text>
-                   </View>
-               </View>
+                <View style={styles.registerForm}>
+                    <View style={styles.imageView}>
+                        <Image
+                            style={styles.logo}
+                            source={require('../assets/logo.png')}
+                        />
+                    </View>
+                    <View style={styles.inputFieldsForm}>
+                        <Fumi
+                            style={[
+                                styles.fumiStyle,
+                                { borderColor: '#fff' },
+                            ]}
+                            keyboardType="default"
+                            label="Username"
+                            iconClass={FontAwesomeIcon}
+                            labelStyle={{ color: '#fff' }}
+                            inputStyle={{ color: '#fff' }}
+                            iconName={'user'}
+                            iconColor={'#fff'}
+                            iconSize={20}
+                            iconWidth={40}
+                            returnKeyType="next"
+                            onChangeText={(username) => setUsername(username)}
+                            onSubmitEditing={() => {
+                                refPassword.current.focus();
+                            }}
+                        />
+                        <Fumi
+                            ref={refPassword}
+                            style={[
+                                styles.fumiStyle,
+                                { borderColor: '#fff' },
+                            ]}
+                            label="Password"
+                            iconClass={FontAwesomeIcon}
+                            labelStyle={{ color: '#fff' }}
+                            inputStyle={{ color: '#fff' }}
+                            iconName={'lock'}
+                            iconColor={'#fff'}
+                            iconSize={20}
+                            iconWidth={40}
+                            secureTextEntry={true}
+                            onChangeText={(password) => setPassword(password)}
+                            passiveIconColor={'#adadad'}
+                        />
+                        <TouchableOpacity
+                            style={[
+                                styles.btnNext,
+                                {
+                                    backgroundColor: '#2196f3',
+                                },
+                            ]}
+                            disabled={loginLoading}
+                            onPress={() => login()}
+                        >
+                            {loginLoading ? (
+                                <ActivityIndicator size="small" color="white" />
+                            ) : (
+                                <Text style={styles.textNext}>Login</Text>
+                            )}
+                        </TouchableOpacity>
+                    </View>
+                    <View
+                        style={{
+                            flex: 1,
+                            alignItems: 'center',
+                            justifyContent: 'flex-end',
+                        }}
+                    >
+                        <Text style={{ color: '#fff' }} selectable={true}>
+                            {/*{expoToken}*/}
+                        </Text>
+                    </View>
+                    <TouchableOpacity
+                        style={[
+                            styles.btnRegister, // Ovde koristimo novi stil za dugme
+                            { backgroundColor: '#f39c12' },
+                        ]}
+                        onPress={() => navigation.navigate('Register')} // Navigacija ka stranici Register
+                    >
+                        <Text style={styles.textRegister}>Registracija</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         </SafeAreaView>
-    )
+    );
 };
 
 const styles = StyleSheet.create({
@@ -162,4 +219,18 @@ const styles = StyleSheet.create({
     textNext: {
         color: "white",
     },
+    btnRegister: {
+        padding: 13,
+        borderRadius: 3,
+        alignItems: 'center',
+        marginTop: 15,
+        backgroundColor: '#3498db', // Plava nijansa (ili bilo koja druga boja po vašem izboru)
+    },
+    textRegister: {
+        color: '#fff', // Bijela boja teksta na dugmetu za registraciju
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
 });
+
+export default LoginScreen;
