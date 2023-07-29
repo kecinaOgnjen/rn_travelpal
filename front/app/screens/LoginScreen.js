@@ -147,7 +147,7 @@ const LoginScreen = () => {
                             styles.btnRegister, // Ovde koristimo novi stil za dugme
                             { backgroundColor: '#f39c12' },
                         ]}
-                        onPress={() => navigation.navigate('Register')} // Navigacija ka stranici Register
+                        onPress={() => navigation.navigate('RegisterScreen')} // Navigacija ka stranici Register
                     >
                         <Text style={styles.textRegister}>Registracija</Text>
                     </TouchableOpacity>
