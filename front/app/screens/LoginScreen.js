@@ -54,7 +54,8 @@ const LoginScreen = () => {
             console.log(response.data);
 
             if (response.data.isSuccess === true) {
-                navigateCloseCurrent(HOME);
+                const { token, userId } = response.data;
+                navigateCloseCurrent(HOME, { token, userId });
             } else {
                 console.log('neuspjeh');
             }

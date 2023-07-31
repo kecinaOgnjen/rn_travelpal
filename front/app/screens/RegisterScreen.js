@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import axiosInstance from "../api/api";
+import {LOGIN} from "../utils/consts/consts"; // Uvezemo axiosInstance da bismo mogli slati zahtjeve na backend
+import { Alert } from 'react-native';
+import {showAlert} from "../utils/main";
 
-const RegisterScreen = () => {
+const RegisterScreen = ({ navigation }) => {
     const [fullName, setFullName] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [registerLoading, setRegisterLoading] = useState(false); // Dodajemo novu varijablu za indikaciju da li je u toku proces registracije
+
 
     const [errors, setErrors] = useState({
         fullNameError: '',
@@ -62,10 +68,40 @@ const RegisterScreen = () => {
         return isValid;
     };
 
-    const handleRegister = () => {
-        if (validateFields()) {
-            // Ovdje pozivamo API za registraciju ili obavljamo dalju logiku za registraciju korisnika
-            // Ako su svi podaci ispravno uneseni, nastavite sa procesom registracije
+    const handleRegister = async () => {
+        if (!validateFields()) {
+            // Ako validacija nije prošla, ne radimo ništa
+            return;
+        }
+
+        try {
+            setRegisterLoading(true);
+
+            // Kreiramo objekat sa podacima koje ćemo slati na backend
+            const userData = {
+                fullName: fullName,
+                username: username,
+                password: password,
+                email: email,
+                phoneNumber: phoneNumber,
+            };
+
+            // Šaljemo POST zahtev ka /register endpoint-u na backendu
+            const response = await axiosInstance.post("/register", userData);
+
+            // Proveravamo odgovor od backenda
+            if (response.data.isSuccess === true) {
+                // Ako je registracija uspešna, navigiramo na drugu stranicu (na primer, HomeScreen)
+                Alert.alert("Uspješna registracija", "Vaš nalog je uspješno kreiran!", [{ text: "OK", onPress: () => navigation.navigate(LOGIN) }]);
+            } else {
+                // Ako nije uspešna, prikazujemo odgovarajuću poruku
+                showAlert(response.data.msg || "Greška prilikom registracije.");
+            }
+        } catch (error) {
+            console.log(error);
+            showAlert("Greška prilikom slanja zahteva.");
+        } finally {
+            setRegisterLoading(false);
         }
     };
 

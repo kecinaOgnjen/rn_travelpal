@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, Dimensions, Modal } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import useCustomWindowDimensions from "../utils/main";
 import { useNavigation } from '@react-navigation/native'; // Importujemo hook za navigaciju
@@ -21,8 +22,12 @@ const ModalContent = ({ onClose, onConfirm }) => (
 );
 
 const HomeScreen = ({ navigation }) => {
+    const [token, setToken] = useState(null);
+    const [userId, setUserId] = useState(null);
     const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
     const { width: customWindowWidth } = useCustomWindowDimensions();
+    const route = useRoute();
+    const { token: routeToken, routeUserId } = route.params || {};
     // const navigation = useNavigation();
     const handleLogout = () => {
         setIsLogoutModalVisible(true);
@@ -35,8 +40,12 @@ const HomeScreen = ({ navigation }) => {
     // Funkcija za potvrdu odjavljivanja
     const confirmLogout = () => {
         closeModal();
-        navigation.navigate('Login');
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'Login' }],
+        });
     };
+
 
     const handleSettings = () => {
         navigation.navigate('UserSettings');
