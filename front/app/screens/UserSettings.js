@@ -1,8 +1,10 @@
 import React, {useContext, useEffect, useState} from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import {View, Text, StyleSheet, TextInput, TouchableOpacity, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {AuthContext} from "../authContext/authContext";
 import axiosInstance, {userSettingsAxios} from "../api/api";
+import {HOME, LOGIN} from "../utils/consts/consts";
+import * as navigation from "../utils/RootNavigator";
 
 const UserSettings = () => {
     // Stanje za čuvanje trenutnih vrednosti korisničkog imena, imena i prezimena, emaila, broja telefona i lozinke
@@ -12,26 +14,44 @@ const UserSettings = () => {
     const [password, setPassword] = useState('');
     const [isPasswordVisible, setIsPasswordVisible] = useState(false); // Dodali smo stanje za praćenje vidljivosti lozinke
 
-    const { token, userId } = useContext(AuthContext);
+    const {token, userId} = useContext(AuthContext);
 
-    // Funkcija za čuvanje promena
-    const handleSaveChanges = () => {
-        // Ovde možete implementirati logiku za čuvanje promena na serveru ili bazi podataka
-        // Na primer, možete poslati PUT zahtev ka API-ju sa novim vrednostima koje su unete u input poljima
-        // Nakon što se promene sačuvaju, možete prikazati odgovarajuću poruku korisniku
+    const handleSaveChanges = async () => {
+        try {
+            const response = await userSettingsAxios.post('/changeUserInfo', {
+                // id: userId,
+                username: username,
+                email: email,
+                phone: phoneNumber,
+                password: password,
+            });
+
+            if (response.data.isSuccess) {
+                Alert.alert("Uspjeh", "Promjene su uspješno sačuvane!", [{
+                    text: "OK",
+                    onPress: () => navigation.navigate(HOME)
+                }]);
+            } else if (response.data.message === "ID nije dostavljen") {
+                Alert.alert("Greška", "ID nije dostavljen.", [{text: "OK"}]);
+            } else if (response.data.message === "Korisnik sa datim ID-om nije pronađen") {
+                Alert.alert("Greška", "Korisnik sa datim ID-om nije pronađen.", [{text: "OK"}]);
+            } else {
+                Alert.alert("Greška", "Došlo je do greške prilikom čuvanja promjena.", [{
+                    text: "OK", onPress: () => {
+                    }
+                }]);
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     useEffect(() => {
-        console.log(token, userId)
-        // Definišemo async funkciju unutar useEffect-a kako bismo mogli da koristimo "await"
         const fetchUserInfo = async () => {
             try {
-                // Pravimo zahtjev ka /getUserInfo endpointu sa userId kao parametrom
                 const response = await userSettingsAxios.post('/getUserInfo', {
                     id: userId,
                 });
-
-                // Ako zahtjev bude uspješan, postavljamo odgovarajuće stanje sa podacima koje smo dobili
                 if (response.data.isSuccess) {
                     const userInfo = response.data.userInfo;
                     setUsername(userInfo.username);
@@ -140,9 +160,11 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         padding: 10,
         marginBottom: 10,
+        color: '#fff',
     },
     passwordInput: {
         flex: 1,
+        color: '#fff',
     },
     eyeIcon: {
         padding: 10,

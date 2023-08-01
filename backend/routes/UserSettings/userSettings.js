@@ -25,7 +25,6 @@ router.route('/getUserInfo').post(async function (req, res) {
         if (rows && rows.length > 0) {
             const userInfo = rows[0];
 
-            // Vraćamo informacije o korisniku
             retVal.isSuccess = true;
             retVal.userInfo = {
                 username: userInfo.username,
@@ -46,5 +45,46 @@ router.route('/getUserInfo').post(async function (req, res) {
         res.status(500).json(retVal);
     }
 })
+
+router.route('/changeUserInfo').post(async function (req, res) {
+    let retVal = { isSuccess: false };
+
+    try {
+        const { id, username, email, phone, password } = req.body;
+
+        if (!id) {
+            retVal.message = 'ID nije dostavljen';
+            return res.status(400).json(retVal);
+        }
+
+        const userQuery = 'SELECT * FROM users WHERE id = $1';
+        const userResult = await pool.query(userQuery, [id]);
+        const existingUser = userResult.rows[0];
+
+        if (!existingUser) {
+            retVal.message = 'Korisnik sa datim ID-om nije pronađen';
+            return res.status(404).json(retVal);
+        }
+
+        // Ažuriramo korisnika u bazi podataka s novim informacijama
+        const updateQuery = `
+            UPDATE users
+            SET username     = $1,
+                email        = $2,
+                phone_number = $3,
+                password     = $4
+            WHERE id = $5
+        `;
+
+        await pool.query(updateQuery, [username, email, phone, password, id]);
+        // Nakon uspješnog ažuriranja, postavite retVal.isSuccess na true
+        retVal.isSuccess = true;
+        res.status(200).json(retVal);
+    } catch (err) {
+        console.log({ changeUserInfoError: err.message });
+        retVal.message = err.message;
+        res.status(500).json(retVal);
+    }
+});
 
 module.exports = router;
