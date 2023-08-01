@@ -14,12 +14,27 @@ const UserSettings = () => {
     const [password, setPassword] = useState('');
     const [isPasswordVisible, setIsPasswordVisible] = useState(false); // Dodali smo stanje za praćenje vidljivosti lozinke
 
+    const [savedUsername, setSavedUsername] = useState('');
+    const [savedEmail, setSavedEmail] = useState('');
+    const [savedPhoneNumber, setSavedPhoneNumber] = useState('');
+    const [savedPassword, setSavedPassword] = useState('');
     const {token, userId} = useContext(AuthContext);
 
     const handleSaveChanges = async () => {
         try {
+
+            if (
+                username === savedUsername &&
+                email === savedEmail &&
+                phoneNumber === savedPhoneNumber &&
+                password === savedPassword
+            ) {
+                Alert.alert("Upozorenje", "Nema promjena u podacima.");
+                return;
+            }
+
             const response = await userSettingsAxios.post('/changeUserInfo', {
-                // id: userId,
+                id: userId,
                 username: username,
                 email: email,
                 phone: phoneNumber,
@@ -55,9 +70,13 @@ const UserSettings = () => {
                 if (response.data.isSuccess) {
                     const userInfo = response.data.userInfo;
                     setUsername(userInfo.username);
+                    setSavedUsername(userInfo.username);
                     setEmail(userInfo.email);
+                    setSavedEmail(userInfo.email);
                     setPhoneNumber(userInfo.phone);
+                    setSavedPhoneNumber(userInfo.phone);
                     setPassword(userInfo.password);
+                    setSavedPassword(userInfo.password);
                 }
             } catch (error) {
                 console.log(error);
