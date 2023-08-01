@@ -10,7 +10,6 @@ const UserSettings = () => {
     const [password, setPassword] = useState('');
     const [isPasswordVisible, setIsPasswordVisible] = useState(false); // Dodali smo stanje za praćenje vidljivosti lozinke
 
-
     // Funkcija za čuvanje promena
     const handleSaveChanges = () => {
         // Ovde možete implementirati logiku za čuvanje promena na serveru ili bazi podataka
@@ -27,7 +26,7 @@ const UserSettings = () => {
             <TextInput
                 style={styles.input}
                 placeholder="Korisničko ime"
-                placeholderTextColor="#000"
+                placeholderTextColor="#fff"
                 value={username}
                 onChangeText={(text) => setUsername(text)}
             />
@@ -36,7 +35,7 @@ const UserSettings = () => {
             <TextInput
                 style={styles.input}
                 placeholder="Email"
-                placeholderTextColor="#000"
+                placeholderTextColor="#fff"
                 value={email}
                 onChangeText={(text) => setEmail(text)}
             />
@@ -45,7 +44,7 @@ const UserSettings = () => {
             <TextInput
                 style={styles.input}
                 placeholder="Broj telefona"
-                placeholderTextColor="#000"
+                placeholderTextColor="#fff"
                 value={phoneNumber}
                 onChangeText={(text) => setPhoneNumber(text)}
             />
@@ -55,7 +54,7 @@ const UserSettings = () => {
                 <TextInput
                     style={styles.passwordInput}
                     placeholder="Lozinka"
-                    placeholderTextColor="#000"
+                    placeholderTextColor="#fff"
                     secureTextEntry={!isPasswordVisible} // Da sakrije/sačuva unos lozinke u zavisnosti od stanja
                     value={password}
                     onChangeText={(text) => setPassword(text)}
@@ -68,7 +67,7 @@ const UserSettings = () => {
                     <Icon
                         name={isPasswordVisible ? 'eye' : 'eye-slash'}
                         size={20}
-                        color="#000"
+                        color="#fff"
                     />
                 </TouchableOpacity>
             </View>
@@ -84,23 +83,38 @@ const UserSettings = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#000',
+        justifyContent: 'center',
         padding: 20,
-        backgroundColor: '#fff', // Promenili smo pozadinu stranice u belu boju
     },
     title: {
+        color: '#fff',
         fontSize: 24,
         fontWeight: 'bold',
-        marginBottom: 20,
-        color: '#000', // Promenili smo boju naslova u crnu boju
+        textAlign: 'center',
+        marginVertical: 20,
     },
     input: {
         borderWidth: 1,
-        borderColor: '#000', // Promenili smo boju okvira input polja u crnu boju
+        borderColor: '#fff',
         borderRadius: 5,
         padding: 10,
         marginBottom: 10,
-        color: '#000', // Promenili smo boju teksta unutar input polja u crnu boju
-        backgroundColor: '#fff', // Dodali smo belu pozadinu input polja
+    },
+    passwordInputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: '#fff',
+        borderRadius: 5,
+        padding: 10,
+        marginBottom: 10,
+    },
+    passwordInput: {
+        flex: 1,
+    },
+    eyeIcon: {
+        padding: 10,
     },
     saveButton: {
         backgroundColor: '#007BFF',
@@ -112,23 +126,6 @@ const styles = StyleSheet.create({
     saveButtonText: {
         color: '#fff',
         fontSize: 16,
-    },
-    passwordInputContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: '#000',
-        borderRadius: 5,
-        padding: 10,
-        marginBottom: 10,
-        backgroundColor: '#fff',
-    },
-    passwordInput: {
-        flex: 1,
-        color: '#000',
-    },
-    eyeIcon: {
-        padding: 10,
     },
 });
 

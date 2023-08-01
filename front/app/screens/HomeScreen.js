@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
     },
     modalButtonConfirm: {
-        backgroundColor: '#00cc00',
+        backgroundColor: '#2196f3',
     },
     modalButtonCancel: {
         backgroundColor: '#ff3333',
