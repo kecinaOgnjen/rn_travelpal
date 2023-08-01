@@ -29,10 +29,14 @@ router.route('/login').post(async function (req, res) {
             return res.status(200).json(retVal);
         }
 
+        // Očitavamo ID novog korisnika iz rezultata INSERT upita
+        const userId = user_db.id;
+
         const token = jwt.sign({
             username: username,
         }, config.serverSecretKey, {expiresIn: '365d'});
         retVal.idToken = token;
+        retVal.userId = userId;
         retVal.isSuccess = true;
         res.status(200).json(retVal);
     } catch (err) {

@@ -14,6 +14,7 @@ import HomeScreen from "../screens/HomeScreen";
 import UserSettings from "../screens/UserSettings";
 import TravelDiaryScreen from "../screens/TravelDiaryScreen";
 import RegisterScreen from "../screens/RegisterScreen";
+import {AuthProvider} from "../authContext/authContext";
 
 const Stack = createStackNavigator();
 
@@ -30,6 +31,7 @@ export default function homeStack(){
                 hidden={false}
             />
             <View style={{flex: 1}}>
+            <AuthProvider>
                 <NavigationContainer ref={navigationRef}>
                     <Stack.Navigator
                         screenOptions={{
@@ -62,6 +64,7 @@ export default function homeStack(){
                         />
                     </Stack.Navigator>
                 </NavigationContainer>
+            </AuthProvider>
             </View>
         </View>
     );

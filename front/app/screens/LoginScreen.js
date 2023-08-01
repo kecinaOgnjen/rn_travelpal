@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, {useState, useRef, useContext} from 'react';
 import {
     View,
     Text,
@@ -15,13 +15,20 @@ import axiosInstance from '../api/api';
 import { navigateCloseCurrent } from '../utils/RootNavigator';
 import {HOME, LOGIN} from '../utils/consts/consts';
 import {showAlert} from "../utils/main";
+import {AuthContext} from "../authContext/authContext";
 
 const LoginScreen = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
+    const [token, setToken] = useState(null);
+    const [userId, setUserId] = useState(null);
+
     const [loginLoading, setLoginLoading] = useState(false);
     const refPassword = useRef();
     const navigation = useNavigation(); // Koristimo hook za navigaciju
+
+    const { handleLogin } = useContext(AuthContext);
 
     const login = async () => {
         if (username === '' && password === '') {
@@ -51,10 +58,10 @@ const LoginScreen = () => {
                 username: username,
                 password: password,
             });
-            console.log(response.data);
 
             if (response.data.isSuccess === true) {
-                const { token, userId } = response.data;
+                const { idToken, userId } = response.data;
+                handleLogin(idToken, userId);
                 navigateCloseCurrent(HOME, { token, userId });
             } else if (response.data.message === "Username is not valid") {
                 Alert.alert("Greška", "Korisničko ime ne postoji.", [{ text: "OK", onPress: () => {
