@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
-import axiosInstance from "../api/api";
+import axiosInstance, {authAxios} from "../api/api";
 import {LOGIN} from "../utils/consts/consts"; // Uvezemo axiosInstance da bismo mogli slati zahtjeve na backend
 import { Alert } from 'react-native';
 import {showAlert} from "../utils/main";
@@ -87,7 +87,7 @@ const RegisterScreen = ({ navigation }) => {
             };
 
             // Šaljemo POST zahtev ka /register endpoint-u na backendu
-            const response = await axiosInstance.post("/register", userData);
+            const response = await authAxios.post("/register", userData);
 
             // Proveravamo odgovor od backenda
             if (response.data.isSuccess === true) {

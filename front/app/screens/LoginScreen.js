@@ -11,7 +11,7 @@ import {
 import { Fumi } from 'react-native-textinput-effects';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native'; // Importujemo hook za navigaciju
-import axiosInstance from '../api/api';
+import axiosInstance, {authAxios} from '../api/api';
 import { navigateCloseCurrent } from '../utils/RootNavigator';
 import {HOME, LOGIN} from '../utils/consts/consts';
 import {showAlert} from "../utils/main";
@@ -54,7 +54,7 @@ const LoginScreen = () => {
         setLoginLoading(true);
 
         try {
-            const response = await axiosInstance.post('/login', {
+            const response = await authAxios.post('/login', {
                 username: username,
                 password: password,
             });

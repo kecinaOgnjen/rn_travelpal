@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {AuthContext} from "../authContext/authContext";
+import axiosInstance, {userSettingsAxios} from "../api/api";
 
 const UserSettings = () => {
     // Stanje za čuvanje trenutnih vrednosti korisničkog imena, imena i prezimena, emaila, broja telefona i lozinke
@@ -10,12 +12,40 @@ const UserSettings = () => {
     const [password, setPassword] = useState('');
     const [isPasswordVisible, setIsPasswordVisible] = useState(false); // Dodali smo stanje za praćenje vidljivosti lozinke
 
+    const { token, userId } = useContext(AuthContext);
+
     // Funkcija za čuvanje promena
     const handleSaveChanges = () => {
         // Ovde možete implementirati logiku za čuvanje promena na serveru ili bazi podataka
         // Na primer, možete poslati PUT zahtev ka API-ju sa novim vrednostima koje su unete u input poljima
         // Nakon što se promene sačuvaju, možete prikazati odgovarajuću poruku korisniku
     };
+
+    useEffect(() => {
+        console.log(token, userId)
+        // Definišemo async funkciju unutar useEffect-a kako bismo mogli da koristimo "await"
+        const fetchUserInfo = async () => {
+            try {
+                // Pravimo zahtjev ka /getUserInfo endpointu sa userId kao parametrom
+                const response = await userSettingsAxios.post('/getUserInfo', {
+                    id: userId,
+                });
+
+                // Ako zahtjev bude uspješan, postavljamo odgovarajuće stanje sa podacima koje smo dobili
+                if (response.data.isSuccess) {
+                    const userInfo = response.data.userInfo;
+                    setUsername(userInfo.username);
+                    setEmail(userInfo.email);
+                    setPhoneNumber(userInfo.phone);
+                    setPassword(userInfo.password);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        fetchUserInfo();
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -100,6 +130,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         padding: 10,
         marginBottom: 10,
+        color: '#fff',
     },
     passwordInputContainer: {
         flexDirection: 'row',
