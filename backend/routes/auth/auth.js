@@ -9,7 +9,7 @@ const {query} = require("express");
 const path = require('path');
 
 router.route('/login').post(async function (req, res) {
-    let retVal = {idToken: null, message: '', isSuccess: false};
+    let retVal = {idToken: null, isSuccess: false};
     try {
         if (!req.body) {
             res.status(200).json(retVal);
@@ -19,13 +19,13 @@ router.route('/login').post(async function (req, res) {
 
         const {rows} = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
         if (rows == null || rows.length === 0) {
-            retVal.msg = 'Username is not valid';
+            retVal.message = 'Username is not valid';
             return res.status(200).json(retVal);
         }
 
         const user_db = rows[0];
         if (password !== user_db.password) {
-            retVal.msg = 'Password is not valid';
+            retVal.message = 'Password is not valid';
             return res.status(200).json(retVal);
         }
 
@@ -37,7 +37,7 @@ router.route('/login').post(async function (req, res) {
         res.status(200).json(retVal);
     } catch (err) {
         console.log({loginError: err.message});
-        retVal.msg = err.message;
+        retVal.message = err.message;
         res.status(200).json(retVal);
     }
 });
@@ -53,7 +53,7 @@ router.route('/register').post(async function (req, res) {
 
         const { rows } = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
         if (rows && rows.length > 0) {
-            retVal.msg = 'Korisničko ime je već zauzeto.';
+            retVal.message = 'Korisničko ime je već zauzeto.';
             return res.status(200).json(retVal);
         }
 
@@ -68,7 +68,7 @@ router.route('/register').post(async function (req, res) {
         res.status(200).json(retVal);
     } catch (err) {
         console.log({ registerError: err.message });
-        retVal.msg = err.message;
+        retVal.message = err.message;
         res.status(200).json(retVal);
     }
 });

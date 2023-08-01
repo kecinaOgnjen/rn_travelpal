@@ -96,6 +96,7 @@ const RegisterScreen = ({ navigation }) => {
             } else {
                 // Ako nije uspešna, prikazujemo odgovarajuću poruku
                 showAlert(response.data.msg || "Greška prilikom registracije.");
+                const userData = {};
             }
         } catch (error) {
             console.log(error);

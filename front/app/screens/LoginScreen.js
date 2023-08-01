@@ -6,15 +6,15 @@ import {
     StyleSheet,
     Image,
     ActivityIndicator,
-    TouchableOpacity,
+    TouchableOpacity, Alert,
 } from 'react-native';
 import { Fumi } from 'react-native-textinput-effects';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native'; // Importujemo hook za navigaciju
-import { showAlert } from '../components/Alerts/MessageFancyAlerts';
 import axiosInstance from '../api/api';
 import { navigateCloseCurrent } from '../utils/RootNavigator';
-import { HOME } from '../utils/consts/consts';
+import {HOME, LOGIN} from '../utils/consts/consts';
+import {showAlert} from "../utils/main";
 
 const LoginScreen = () => {
     const [username, setUsername] = useState('');
@@ -56,8 +56,14 @@ const LoginScreen = () => {
             if (response.data.isSuccess === true) {
                 const { token, userId } = response.data;
                 navigateCloseCurrent(HOME, { token, userId });
-            } else {
-                console.log('neuspjeh');
+            } else if (response.data.message === "Username is not valid") {
+                Alert.alert("Greška", "Korisničko ime ne postoji.", [{ text: "OK", onPress: () => {
+                        setUsername('');
+                    }}]);
+            }else if (response.data.message === "Password is not valid") {
+                Alert.alert("Greška", "Lozinka nije ispravna.", [{ text: "OK", onPress: () => {
+                        setPassword('');
+                    }}]);
             }
         } catch (error) {
             console.log(error);
@@ -84,6 +90,7 @@ const LoginScreen = () => {
                             ]}
                             keyboardType="default"
                             label="Username"
+                            value={username}
                             iconClass={FontAwesomeIcon}
                             labelStyle={{ color: '#fff' }}
                             inputStyle={{ color: '#fff' }}
@@ -104,6 +111,7 @@ const LoginScreen = () => {
                                 { borderColor: '#fff' },
                             ]}
                             label="Password"
+                            value={password}
                             iconClass={FontAwesomeIcon}
                             labelStyle={{ color: '#fff' }}
                             inputStyle={{ color: '#fff' }}
