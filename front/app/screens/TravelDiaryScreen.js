@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Image } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import ImagePicker from 'react-native-image-picker';
 
 const TravelDiaryScreen = () => {
     const [experiences, setExperiences] = useState([]);
@@ -9,6 +9,30 @@ const TravelDiaryScreen = () => {
     const addExperience = () => {
         setExperiences([...experiences, newExperience]);
         setNewExperience({ image: null, description: '', rating: 0, location: '' });
+    };
+
+    const pickImage = () => {
+        ImagePicker.showImagePicker(
+            {
+                title: 'Odaberite fotografiju',
+                cancelButtonTitle: 'Otkaži',
+                takePhotoButtonTitle: 'Uslikajte fotografiju',
+                chooseFromLibraryButtonTitle: 'Izaberite iz galerije',
+                mediaType: 'photo',
+                quality: 1,
+                maxWidth: 500,
+                maxHeight: 500,
+            },
+            (response) => {
+                if (response.didCancel) {
+                    console.log('Korisnik je otkazao odabir fotografije');
+                } else if (response.error) {
+                    console.log('Greška prilikom odabira fotografije:', response.error);
+                } else {
+                    setNewExperience({ ...newExperience, image: response.uri });
+                }
+            }
+        );
     };
 
     return (
@@ -49,6 +73,9 @@ const TravelDiaryScreen = () => {
                     value={newExperience.location}
                     onChangeText={(text) => setNewExperience({ ...newExperience, location: text })}
                 />
+                <TouchableOpacity style={styles.addButton} onPress={pickImage}>
+                    <Text style={styles.addButtonLabel}>Dodaj fotografiju</Text>
+                </TouchableOpacity>
                 <TouchableOpacity style={styles.addButton} onPress={addExperience}>
                     <Text style={styles.addButtonLabel}>Dodaj iskustvo</Text>
                 </TouchableOpacity>
