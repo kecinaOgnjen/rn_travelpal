@@ -91,54 +91,65 @@ const UserSettings = () => {
             {/* Naslov Podesavanja */}
             <Text style={styles.title}>Podešavanja</Text>
 
-            {/* Input polje za izmenu korisničkog imena */}
-            <TextInput
-                style={styles.input}
-                placeholder="Korisničko ime"
-                placeholderTextColor="#fff"
-                value={username}
-                onChangeText={(text) => setUsername(text)}
-            />
-
-            {/* Input polje za izmenu emaila */}
-            <TextInput
-                style={styles.input}
-                placeholder="Email"
-                placeholderTextColor="#fff"
-                value={email}
-                onChangeText={(text) => setEmail(text)}
-            />
-
-            {/* Input polje za izmenu broja telefona */}
-            <TextInput
-                style={styles.input}
-                placeholder="Broj telefona"
-                placeholderTextColor="#fff"
-                value={phoneNumber}
-                onChangeText={(text) => setPhoneNumber(text)}
-            />
-
-            {/* Input polje za izmenu lozinke */}
-            <View style={styles.passwordInputContainer}>
+            {/* Labela i input polje za izmenu korisničkog imena */}
+            <View style={styles.fieldContainer}>
+                <Text style={styles.label}>Korisničko ime:</Text>
                 <TextInput
-                    style={styles.passwordInput}
-                    placeholder="Lozinka"
+                    style={styles.input}
+                    placeholder="Korisničko ime"
                     placeholderTextColor="#fff"
-                    secureTextEntry={!isPasswordVisible} // Da sakrije/sačuva unos lozinke u zavisnosti od stanja
-                    value={password}
-                    onChangeText={(text) => setPassword(text)}
+                    value={username}
+                    onChangeText={(text) => setUsername(text)}
                 />
-                {/* Dodali smo ikonicu oka koja menja stanje vidljivosti lozinke kada se pritisne */}
-                <TouchableOpacity
-                    style={styles.eyeIcon}
-                    onPress={() => setIsPasswordVisible((prevState) => !prevState)}
-                >
-                    <Icon
-                        name={isPasswordVisible ? 'eye' : 'eye-slash'}
-                        size={20}
-                        color="#fff"
+            </View>
+
+            {/* Labela i input polje za izmenu emaila */}
+            <View style={styles.fieldContainer}>
+                <Text style={styles.label}>Email:</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Email"
+                    placeholderTextColor="#fff"
+                    value={email}
+                    onChangeText={(text) => setEmail(text)}
+                />
+            </View>
+
+            {/* Labela i input polje za izmenu broja telefona */}
+            <View style={styles.fieldContainer}>
+                <Text style={styles.label}>Broj telefona:</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Broj telefona"
+                    placeholderTextColor="#fff"
+                    value={phoneNumber}
+                    onChangeText={(text) => setPhoneNumber(text)}
+                />
+            </View>
+
+            {/* Labela i input polje za izmenu lozinke */}
+            <View style={styles.fieldContainer}>
+                <Text style={styles.label}>Lozinka:</Text>
+                <View style={styles.passwordInputContainer}>
+                    <TextInput
+                        style={styles.passwordInput}
+                        placeholder="Lozinka"
+                        placeholderTextColor="#fff"
+                        secureTextEntry={!isPasswordVisible}
+                        value={password}
+                        onChangeText={(text) => setPassword(text)}
                     />
-                </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.eyeIcon}
+                        onPress={() => setIsPasswordVisible((prevState) => !prevState)}
+                    >
+                        <Icon
+                            name={isPasswordVisible ? 'eye' : 'eye-slash'}
+                            size={20}
+                            color="#fff"
+                        />
+                    </TouchableOpacity>
+                </View>
             </View>
 
             {/* Dugme za čuvanje promena */}
@@ -163,12 +174,20 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginVertical: 20,
     },
+    fieldContainer: {
+        marginBottom: 10,
+    },
+    label: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: 5,
+    },
     input: {
         borderWidth: 1,
         borderColor: '#fff',
         borderRadius: 5,
         padding: 10,
-        marginBottom: 10,
         color: '#fff',
     },
     passwordInputContainer: {
@@ -178,7 +197,6 @@ const styles = StyleSheet.create({
         borderColor: '#fff',
         borderRadius: 5,
         padding: 10,
-        marginBottom: 10,
         color: '#fff',
     },
     passwordInput: {
