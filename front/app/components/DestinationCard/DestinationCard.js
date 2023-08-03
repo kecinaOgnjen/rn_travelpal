@@ -17,9 +17,13 @@ const DestinationCard = ({ destination, onPress }) => {
 const styles = StyleSheet.create({
     cardContainer: {
         flexDirection: 'row',
+        justifyContent: 'space-between',
         padding: 16,
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
+        borderRadius: 8,
+        marginBottom: 10,
+        backgroundColor: '#fff',
     },
     image: {
         width: 80,
@@ -33,14 +37,17 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 18,
         fontWeight: 'bold',
+        textAlign: 'center',
     },
     description: {
         marginTop: 4,
         color: '#666',
+        textAlign: 'center',
     },
     location: {
         marginTop: 4,
         color: '#999',
+        textAlign: 'center',
     },
 });
 

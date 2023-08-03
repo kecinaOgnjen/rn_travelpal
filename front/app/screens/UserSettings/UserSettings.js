@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {View, Text, StyleSheet, TextInput, TouchableOpacity, Alert} from 'react-native';
+import {View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, ActivityIndicator} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {AuthContext} from "../../authContext/authContext";
 import axiosInstance, {userSettingsAxios} from "../../api/api";
@@ -19,6 +19,8 @@ const UserSettings = () => {
     const [savedPhoneNumber, setSavedPhoneNumber] = useState('');
     const [savedPassword, setSavedPassword] = useState('');
     const {token, userId} = useContext(AuthContext);
+
+    const [loading, setLoading] = useState(true);
 
     const handleSaveChanges = async () => {
         try {
@@ -77,14 +79,24 @@ const UserSettings = () => {
                     setSavedPhoneNumber(userInfo.phone);
                     setPassword(userInfo.password);
                     setSavedPassword(userInfo.password);
+                    setLoading(false);
                 }
             } catch (error) {
                 console.log(error);
+                setLoading(false);
             }
         };
 
         fetchUserInfo();
     }, []);
+
+    if (loading) {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+        );
+    }
 
     return (
         <View style={styles.container}>

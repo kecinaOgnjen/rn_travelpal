@@ -1,8 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import {View, FlatList, ActivityIndicator} from 'react-native';
-import DestinationCard from "../../components/DestinationCard/DestinationCard";
-import {destinations} from "../../api/api";
-
+import React, { useEffect, useState } from 'react';
+import { View, FlatList, ActivityIndicator, Text, StyleSheet } from 'react-native';
+import DestinationCard from '../../components/DestinationCard/DestinationCard';
+import { destinations } from '../../api/api';
 
 const DestinationsScreen = ({ navigation }) => {
     const [destinationsItems, setDestinationsItems] = useState([]);
@@ -18,9 +17,9 @@ const DestinationsScreen = ({ navigation }) => {
             try {
                 const response = await destinations.get('/getDestinations');
 
-               if(response.data.isSuccess){
-                   setDestinationsItems(response.data.destinations);
-               }
+                if (response.data.isSuccess) {
+                    setDestinationsItems(response.data.destinations);
+                }
 
                 setLoading(false);
             } catch (error) {
@@ -41,14 +40,31 @@ const DestinationsScreen = ({ navigation }) => {
     }
 
     return (
-        <View>
+        <View style={styles.container}>
+            <Text style={styles.title}>Destinacije</Text>
             <FlatList
                 data={destinationsItems}
                 keyExtractor={(item) => item.title}
-                renderItem={({ item }) => <DestinationCard destination={item} onPress={handleDestinationPress} />}
+                renderItem={({ item }) => (
+                    <DestinationCard destination={item} onPress={handleDestinationPress} />
+                )}
             />
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#000', // Crni pozadinski background
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#fff', // Bijele slova za naslov
+        textAlign: 'center',
+        paddingVertical: 10,
+    },
+});
 
 export default DestinationsScreen;
