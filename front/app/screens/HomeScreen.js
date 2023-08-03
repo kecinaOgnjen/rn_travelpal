@@ -152,10 +152,6 @@ const HomeScreen = ({ navigation }) => {
                     <TouchableOpacity style={styles.navIcon}>
                         <Icon name="heart" size={24} color="#fff" onPress={handleDiary} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.navIcon}>
-                        <Icon name="user" size={24} color="#fff" />
-                    </TouchableOpacity>
-                    {/*//TODO Ovde dodati stranicu Sve destinacije*/}
                 </View>
             </View>
 
