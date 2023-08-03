@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
-import axiosInstance, {authAxios} from "../api/api";
-import {LOGIN} from "../utils/consts/consts"; // Uvezemo axiosInstance da bismo mogli slati zahtjeve na backend
+import axiosInstance, {authAxios} from "../../api/api";
+import {LOGIN} from "../../utils/consts/consts"; // Uvezemo axiosInstance da bismo mogli slati zahtjeve na backend
 import { Alert } from 'react-native';
-import {showAlert} from "../utils/main";
+import {showAlert} from "../../utils/main";
 
 const RegisterScreen = ({ navigation }) => {
     const [fullName, setFullName] = useState('');

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef  } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Image } from 'react-native';
-import ImagePicker from 'react-native-image-picker';
 
 const TravelDiaryScreen = () => {
+    const fileInputRef = useRef(null);
     const [experiences, setExperiences] = useState([]);
     const [newExperience, setNewExperience] = useState({ image: null, description: '', rating: 0, location: '' });
 
@@ -11,29 +11,18 @@ const TravelDiaryScreen = () => {
         setNewExperience({ image: null, description: '', rating: 0, location: '' });
     };
 
-    const pickImage = () => {
-        ImagePicker.showImagePicker(
-            {
-                title: 'Odaberite fotografiju',
-                cancelButtonTitle: 'Otkaži',
-                takePhotoButtonTitle: 'Uslikajte fotografiju',
-                chooseFromLibraryButtonTitle: 'Izaberite iz galerije',
-                mediaType: 'photo',
-                quality: 1,
-                maxWidth: 500,
-                maxHeight: 500,
-            },
-            (response) => {
-                if (response.didCancel) {
-                    console.log('Korisnik je otkazao odabir fotografije');
-                } else if (response.error) {
-                    console.log('Greška prilikom odabira fotografije:', response.error);
-                } else {
-                    setNewExperience({ ...newExperience, image: response.uri });
-                }
-            }
-        );
-    };
+    const handleImagePick = (file) => {
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+
+        toBase64(file).then(base64String => {
+            setNewExperience({...newExperience, image: base64String})
+        });
+    }
 
     return (
         <View style={styles.container}>
@@ -73,9 +62,18 @@ const TravelDiaryScreen = () => {
                     value={newExperience.location}
                     onChangeText={(text) => setNewExperience({ ...newExperience, location: text })}
                 />
-                <TouchableOpacity style={styles.addButton} onPress={pickImage}>
-                    <Text style={styles.addButtonLabel}>Dodaj fotografiju</Text>
+                <TouchableOpacity
+                    onPress={() => fileInputRef.current.click()}
+                >
+                    <Text>Dodaj fotografiju</Text>
                 </TouchableOpacity>
+
+                <TextInput
+                    ref={fileInputRef}
+                    style={{ display: 'none' }}
+                    type="file"
+                    onChange={(event) => handleImagePick(event.target.files[0])}
+                />
                 <TouchableOpacity style={styles.addButton} onPress={addExperience}>
                     <Text style={styles.addButtonLabel}>Dodaj iskustvo</Text>
                 </TouchableOpacity>

@@ -5,16 +5,27 @@ import {createStackNavigator, TransitionPresets} from "@react-navigation/stack";
 import Constants from 'expo-constants';
 import {StatusBar} from "expo-status-bar";
 
-import {HOME, LOGIN, REGISTERSCREEN, SPLASHSCREEN, TRAVELDIARYSCREEN, USERSETTINGS} from "../utils/consts/consts";
+import {
+    DESTINATIONDETAILSCREEN,
+    DESTINATIONSCREEN,
+    HOME,
+    LOGIN,
+    REGISTERSCREEN,
+    SPLASHSCREEN,
+    TRAVELDIARYSCREEN,
+    USERSETTINGS
+} from "../utils/consts/consts";
 import {navigationRef} from "../utils/RootNavigator";
 
-import LoginScreen from "../screens/LoginScreen";
+import LoginScreen from "../screens/AuthScreens/LoginScreen";
 import SplashScreen from "../screens/SplashScreen";
 import HomeScreen from "../screens/HomeScreen";
-import UserSettings from "../screens/UserSettings";
-import TravelDiaryScreen from "../screens/TravelDiaryScreen";
-import RegisterScreen from "../screens/RegisterScreen";
+import UserSettings from "../screens/UserSettings/UserSettings";
+import TravelDiaryScreen from "../screens/TravelDiaryScreen/TravelDiaryScreen";
+import RegisterScreen from "../screens/AuthScreens/RegisterScreen";
 import {AuthProvider} from "../authContext/authContext";
+import DestinationsScreen from "../screens/DestinationsScreen/DestinationsScreen";
+import DestinationDetailScreen from "../screens/DestinationsScreen/DestinationDetailScreen";
 
 const Stack = createStackNavigator();
 
@@ -61,6 +72,14 @@ export default function homeStack(){
                         <Stack.Screen
                             name={REGISTERSCREEN}
                             component={RegisterScreen}
+                        />
+                        <Stack.Screen
+                            name={DESTINATIONSCREEN}
+                            component={DestinationsScreen}
+                        />
+                        <Stack.Screen
+                            name={DESTINATIONDETAILSCREEN}
+                            component={DestinationDetailScreen}
                         />
                     </Stack.Navigator>
                 </NavigationContainer>

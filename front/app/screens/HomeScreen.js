@@ -54,6 +54,10 @@ const HomeScreen = ({ navigation }) => {
         navigation.navigate('TravelDiaryScreen');
     };
 
+    const handleDestination = () => {
+        navigation.navigate('DestinationsScreen');
+    };
+
     const images = [require('../assets/1.jpeg'), require('../assets/2.jpeg'),  require('../assets/3.jpeg')];
     const flatListRef = useRef(null);
     const imageSliderIntervalRef = useRef(null);
@@ -143,7 +147,7 @@ const HomeScreen = ({ navigation }) => {
                         <Icon name="home" size={24} color="#fff" />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.navIcon}>
-                        <Icon name="search" size={24} color="#fff" />
+                        <Icon name="search" size={24} color="#fff" onPress={handleDestination}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.navIcon}>
                         <Icon name="heart" size={24} color="#fff" onPress={handleDiary} />

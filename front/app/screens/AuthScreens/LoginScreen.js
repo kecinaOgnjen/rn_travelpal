@@ -11,11 +11,11 @@ import {
 import { Fumi } from 'react-native-textinput-effects';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native'; // Importujemo hook za navigaciju
-import axiosInstance, {authAxios} from '../api/api';
-import { navigateCloseCurrent } from '../utils/RootNavigator';
-import {HOME, LOGIN} from '../utils/consts/consts';
-import {showAlert} from "../utils/main";
-import {AuthContext} from "../authContext/authContext";
+import axiosInstance, {authAxios} from '../../api/api';
+import { navigateCloseCurrent } from '../../utils/RootNavigator';
+import {HOME, LOGIN} from '../../utils/consts/consts';
+import {showAlert} from "../../utils/main";
+import {AuthContext} from "../../authContext/authContext";
 
 const LoginScreen = () => {
     const [username, setUsername] = useState('');
@@ -86,7 +86,7 @@ const LoginScreen = () => {
                     <View style={styles.imageView}>
                         <Image
                             style={styles.logo}
-                            source={require('../assets/logo.png')}
+                            source={require('../../assets/logo.png')}
                         />
                     </View>
                     <View style={styles.inputFieldsForm}>

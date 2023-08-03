@@ -1,10 +1,10 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {View, Text, StyleSheet, TextInput, TouchableOpacity, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {AuthContext} from "../authContext/authContext";
-import axiosInstance, {userSettingsAxios} from "../api/api";
-import {HOME, LOGIN} from "../utils/consts/consts";
-import * as navigation from "../utils/RootNavigator";
+import {AuthContext} from "../../authContext/authContext";
+import axiosInstance, {userSettingsAxios} from "../../api/api";
+import {HOME, LOGIN} from "../../utils/consts/consts";
+import * as navigation from "../../utils/RootNavigator";
 
 const UserSettings = () => {
     // Stanje za čuvanje trenutnih vrednosti korisničkog imena, imena i prezimena, emaila, broja telefona i lozinke

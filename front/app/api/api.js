@@ -18,4 +18,13 @@ const userSettingsAxios = axios.create({
     }
 });
 
-export { authAxios, userSettingsAxios };
+const destinations = axios.create({
+    baseURL: "http://192.168.10.109:5000/destinations",
+    withCredentials: false,
+    headers: {
+        'Access-Control-Allow-Origin' : '*',
+        'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+    }
+});
+
+export { authAxios, userSettingsAxios, destinations };
