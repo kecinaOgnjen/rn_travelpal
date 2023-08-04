@@ -4,11 +4,9 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 const DestinationCard = ({ destination, onPress }) => {
     return (
         <TouchableOpacity style={styles.cardContainer} onPress={() => onPress(destination)}>
-            {/*<Image source={{ uri: destination.image }} style={styles.image} />*/}
+            <Image source={{ uri: destination.cover_image }} style={styles.image} />
             <View style={styles.content}>
                 <Text style={styles.title}>{destination.title}</Text>
-                <Text style={styles.description}>{destination.description}</Text>
-                <Text style={styles.location}>{destination.location}</Text>
             </View>
         </TouchableOpacity>
     );

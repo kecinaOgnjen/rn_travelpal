@@ -6,10 +6,10 @@ const DestinationDetailScreen = ({ route }) => {
 
     return (
         <View style={styles.container}>
-            {/*<Image source={{ uri: destination.image }} style={styles.image} />*/}
+            <Image source={{ uri: destination.image }} style={styles.image} />
             <Text style={styles.title}>{destination.title}</Text>
-            <Text style={styles.description}>{destination.description}</Text>
-            <Text style={styles.location}>{destination.location}</Text>
+            <Text style={styles.description}>{destination.long_description}</Text>
+            <Text style={styles.location}>{destination.price}</Text>
         </View>
     );
 };
