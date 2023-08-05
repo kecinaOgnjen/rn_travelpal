@@ -18,6 +18,9 @@ app.use('/userSettings', userSettings);
 const destinations = require('./routes/destinations/destinations');
 app.use('/destinations', destinations);
 
+const experiences = require('./routes/experiences/experiences');
+app.use('/experiences', experiences);
+
 const port = 5000;
 app.listen(port, () => console.log("running 5000"));
 
