@@ -7,33 +7,53 @@ const moment = require('moment');
 const pool = require("../../database");
 const {query} = require("express");
 const path = require('path');
+const base64js = require('base64-js');
+const fs = require("fs");
 
 router.post('/addExperience', async (req, res) => {
-    const retVal = { isSuccess: false };
-    try {
-        if (!req.body) {
-            res.status(400).json(retVal);
-            return;
-        }
 
-        const { description, rate, location, image } = req.body;
+    const { description, rate, location, image } = req.body;
 
-        // Ovdje možete dodati validaciju podataka prije nego što ih unesete u bazu
+    // Konvertuj sliku u base64
+    const imageBase64 = req.body.image;
 
-        const insertQuery = 'INSERT INTO experiences (description, rate, location, image) VALUES ($1, $2, $3, $4) RETURNING id';
-        const result = await pool.query(insertQuery, [description, rate, location, image]);
+    const imageBuffer = Buffer.from(imageBase64, 'base64');
 
-        // Očitavamo ID novog iskustva iz rezultata INSERT upita
-        const experienceId = result.rows[0].id;
+    // Spremi u bazu
+    const insertResult = await pool.query(
+        `INSERT INTO experiences (description, rate, location, image)
+     VALUES ($1, $2, $3, $4)
+     RETURNING id`,
+        [description, rate, location, imageBuffer]
+    );
 
-        retVal.isSuccess = true;
-        retVal.experienceId = experienceId; // Dodajemo ID iskustva u odgovor
-        res.status(200).json(retVal);
-    } catch (err) {
-        console.log({ addExperienceError: err.message });
-        retVal.message = err.message;
-        res.status(500).json(retVal);
-    }
+    res.json({
+        success: true,
+        experienceId: insertResult.rows[0].id
+    })
+
+});
+
+router.get('/getExperience', async (req, res) => {
+    let retVal = {isSuccess: false};
+
+    const result = await pool.query('SELECT * FROM experiences');
+
+    const experiences = result.rows.map(row => {
+        const imageBase64 = row.image.toString('base64');
+        return {
+            id: row.id,
+            description: row.description,
+            rate: row.rate,
+            location: row.location,
+            image:  imageBase64  // već base64
+        };
+    });
+
+    res.json({
+        isSuccess: true,
+        experiences
+    });
 });
 
 module.exports = router;

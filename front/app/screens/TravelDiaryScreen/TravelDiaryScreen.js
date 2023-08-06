@@ -1,7 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Image, Alert} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import {experiencesAxios} from "../../api/api";
+import base64 from 'base64-js';
+
 
 const TravelDiaryScreen = () => {
     const [experiences, setExperiences] = useState([]);
@@ -22,26 +24,36 @@ const TravelDiaryScreen = () => {
             aspect: [4, 3],
             quality: 1,
         });
+        const base64Image = await FileSystem.readAsStringAsync(result.uri, {
+            encoding: 'base64'
+        });
 
         if (!result.cancelled) {
-            setNewExperience({ ...newExperience, image: result.uri });
+            setNewExperience({
+                ...newExperience,
+                image: base64Image
+            });
         }
     };
 
+    // experiences.map((ex) =>{
+    //     console.log(ex.image)
+    // })
+
     const sendExperienceToBackend = async () => {
         try {
-            // Provjeravamo da li su svi podaci ispravno popunjeni prije slanja na backend
-            if (!newExperience.description || newExperience.rating <= 0 || newExperience.rating > 10 || !newExperience.location || !newExperience.image) {
-                alert('Popunite sva polja i dodajte sliku prije slanja.');
-                return;
-            }
+            // if (!newExperience.description || newExperience.rating <= 0 || newExperience.rating > 10 || !newExperience.location || !newExperience.image) {
+            //     alert('Popunite sva polja i dodajte sliku prije slanja.');
+            //     return;
+            // }
+            console.log(newExperience)
 
             const response = await experiencesAxios.post('/addExperience', newExperience);
 
             if (response.data.isSuccess) {
                 // Ukoliko je iskustvo uspješno dodato na backend, osvježavamo listu iskustava
-                setExperiences([...experiences, newExperience]);
-                setNewExperience({image: null, description: '', rating: 0, location: ''});
+                // setExperiences([...experiences, newExperience]);
+                // setNewExperience({image: null, description: '', rating: 0, location: ''});
 
                 // Prikazujemo Alert sa porukom o uspjehu
                 Alert.alert('Uspjeh', 'Iskustvo je uspješno dodato!', [
@@ -76,19 +88,42 @@ const TravelDiaryScreen = () => {
         }
     };
 
+
+    const fetchExperiences = async () => {
+        try {
+            const response = await experiencesAxios.get('/getExperience');
+
+            if (response.data.isSuccess) {
+                setExperiences(response.data.experiences);
+            } else {
+                console.log('Došlo je do greške');
+            }
+
+        } catch (error) {
+            console.error('Greška prilikom dohvaćanja iskustava', error);
+        }
+    };
+
+
+    useEffect(() => {
+        fetchExperiences();
+    }, []);
+
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Putnički dnevnik</Text>
 
             <ScrollView style={styles.experiencesContainer}>
-                {experiences.map((experience, index) => (
+                {experiences.map((experience, index) =>
                     <View key={index} style={styles.experienceCard}>
-                        {experience.image && <Image source={{ uri: experience.image }} style={styles.experienceImage} />}
+                        {experience.image && (
+
+                            <Image source={{ uri: experience.image}} style={styles.experienceImage} />
+                        )}
                         <Text style={styles.experienceDescription}>{experience.description}</Text>
-                        <Text style={styles.experienceRating}>Ocjena: {experience.rating}</Text>
                         <Text style={styles.experienceLocation}>Lokacija: {experience.location}</Text>
                     </View>
-                ))}
+                )}
             </ScrollView>
 
             <View style={styles.newExperienceContainer}>
