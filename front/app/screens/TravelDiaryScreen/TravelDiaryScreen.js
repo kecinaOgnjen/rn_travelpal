@@ -9,6 +9,7 @@ const TravelDiaryScreen = () => {
     const [experiences, setExperiences] = useState([]);
     const [newExperience, setNewExperience] = useState({ image: null, description: '', rating: 0, location: '' });
     const fileInputRef = useRef(null);
+    const [image, setImage] = useState(null);
 
     const handleImagePick = async () => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -28,17 +29,21 @@ const TravelDiaryScreen = () => {
             encoding: 'base64'
         });
 
-        if (!result.cancelled) {
-            setNewExperience({
-                ...newExperience,
-                image: base64Image
-            });
-        }
+        setImage(base64Image);
+
+        // if (!result.cancelled) {
+        //     setNewExperience({
+        //         ...newExperience,
+        //         image: base64Image
+        //     });
+        //
+        //
+        // }
     };
 
-    // experiences.map((ex) =>{
-    //     console.log(ex.image)
-    // })
+    experiences.map((ex) =>{
+        console.log(ex.image)
+    })
 
     const sendExperienceToBackend = async () => {
         try {
@@ -46,11 +51,16 @@ const TravelDiaryScreen = () => {
             //     alert('Popunite sva polja i dodajte sliku prije slanja.');
             //     return;
             // }
-            console.log(newExperience)
+            // console.log(newExperience)
+            console.log(image);
 
-            const response = await experiencesAxios.post('/addExperience', newExperience);
+            const testImage =
+                'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==';
+
+            const response = await experiencesAxios.post('/addExperience', {...newExperience, image: testImage});
 
             if (response.data.isSuccess) {
+
                 // Ukoliko je iskustvo uspješno dodato na backend, osvježavamo listu iskustava
                 // setExperiences([...experiences, newExperience]);
                 // setNewExperience({image: null, description: '', rating: 0, location: ''});
@@ -118,7 +128,8 @@ const TravelDiaryScreen = () => {
                     <View key={index} style={styles.experienceCard}>
                         {experience.image && (
 
-                            <Image source={{ uri: experience.image}} style={styles.experienceImage} />
+                            <Image crossOrigin="anonymous" source={{ uri: 'ZGF0YTppbWFnZS9wbmc7YmFzZTY0LGlWQk9SdzBLR2dvQUFBQU5TVWhFVWdBQUFBVUFBQUFGQ0FZQUFBQ05ieWJsQUFBQUhFbEVRVlFJMTJQNC8vOC93MzhHSUFYRElCS0UwREh4Z2xqTkJBQU85VFhMMFk0T0h3QUFBQUJKUlU1RXJrSmdn'}} style={styles.experienceImage} />
+
                         )}
                         <Text style={styles.experienceDescription}>{experience.description}</Text>
                         <Text style={styles.experienceLocation}>Lokacija: {experience.location}</Text>
