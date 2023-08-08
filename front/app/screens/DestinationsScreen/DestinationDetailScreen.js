@@ -1,8 +1,34 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import Mailer from 'react-native-mail';
+
 
 const DestinationDetailScreen = ({ route }) => {
     const { destination } = route.params;
+
+    const [formData, setFormData] = useState({
+        ime: '',
+        email: '',
+        telefon: '',
+        detalji: '',
+    });
+
+    const sendEmail = () => {
+        const { ime, email, telefon, detalji } = formData;
+        const emailSubject = 'Rezervacija za putovanje';
+        const emailBody = `Ime: ${ime}\nEmail: ${email}\nBroj telefona: ${telefon}\nDetalji putovanja: ${detalji}`;
+
+        Mailer.mail({
+            subject: emailSubject,
+            recipients: ['ognjenkecina@gmail.com'],
+            body: emailBody,
+            isHTML: false,
+        }, (error, event) => {
+            if (error) {
+                console.log('Error sending email:', error);
+            }
+        });
+    };
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -10,44 +36,42 @@ const DestinationDetailScreen = ({ route }) => {
             <Text style={styles.title}>{destination.title}</Text>
             <Text style={styles.description}>{destination.long_description}</Text>
             <Text style={styles.location}>{destination.price}</Text>
-
-            {/* Blue section with Reservation and Contact */}
             <View style={styles.blueSection}>
                 <Text style={styles.blueSectionText}>Rezervacija mjesta</Text>
                 <Text style={styles.blueSectionTextContact}>Kontaktirajte nas</Text>
             </View>
-
-            {/* Non-blue section */}
             <View style={styles.nonBlueSection}>
-                {/* Form */}
                 <TextInput
                     style={styles.input}
                     placeholder="Vaše ime (obavezno)"
+                    onChangeText={(text) => setFormData({ ...formData, ime: text })}
                 />
                 <TextInput
                     style={styles.input}
                     placeholder="Vaš Email (obavezno)"
                     keyboardType="email-address"
+                    onChangeText={(text) => setFormData({ ...formData, email: text })}
                 />
                 <TextInput
                     style={styles.input}
                     placeholder="Broj telefona"
                     keyboardType="phone-pad"
+                    onChangeText={(text) => setFormData({ ...formData, telefon: text })}
                 />
                 <TextInput
                     style={[styles.input, { height: 100 }]}
                     placeholder="Detalji o vašem putovanju (broj polaznika, specijalni zahtjevi)"
                     multiline
+                    onChangeText={(text) => setFormData({ ...formData, detalji: text })}
                 />
             </View>
-
-            {/* Button section */}
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={sendEmail}>
                 <Text style={styles.buttonText}>Pošalji</Text>
             </TouchableOpacity>
         </ScrollView>
     );
 };
+
 
 const styles = StyleSheet.create({
     container: {
@@ -91,7 +115,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         marginBottom: 5,
     },
-    // Non-blue section styles
     nonBlueSection: {
         marginTop: 16,
     },
@@ -101,7 +124,6 @@ const styles = StyleSheet.create({
         marginBottom: 8,
         borderRadius: 4,
     },
-    // Button section styles
     button: {
         backgroundColor: '#2c65be',
         padding: 16,
