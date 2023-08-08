@@ -28,23 +28,9 @@ const TravelDiaryScreen = () => {
         const base64Image = await FileSystem.readAsStringAsync(result.uri, {
             encoding: 'base64'
         });
-
         setImage(base64Image);
-
-        // if (!result.cancelled) {
-        //     setNewExperience({
-        //         ...newExperience,
-        //         image: base64Image
-        //     });
-        //
-        //
-        // }
     };
-
-    experiences.map((ex) =>{
-        console.log(ex.image)
-    })
-
+    console.log(image)
     const sendExperienceToBackend = async () => {
         try {
             // if (!newExperience.description || newExperience.rating <= 0 || newExperience.rating > 10 || !newExperience.location || !newExperience.image) {
@@ -53,34 +39,21 @@ const TravelDiaryScreen = () => {
             // }
             // console.log(newExperience)
             console.log(image);
-
-            const testImage =
-                'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==';
-
             const response = await experiencesAxios.post('/addExperience', {...newExperience, image: testImage});
 
             if (response.data.isSuccess) {
-
-                // Ukoliko je iskustvo uspješno dodato na backend, osvježavamo listu iskustava
-                // setExperiences([...experiences, newExperience]);
-                // setNewExperience({image: null, description: '', rating: 0, location: ''});
-
-                // Prikazujemo Alert sa porukom o uspjehu
                 Alert.alert('Uspjeh', 'Iskustvo je uspješno dodato!', [
                     {
                         text: 'OK',
                         onPress: () => {
-                            // Možete ovdje dodati daljnje radnje nakon uspješnog dodavanja iskustva
                         },
                     },
                 ]);
             } else {
-                // Prikazujemo Alert sa porukom o grešci
                 Alert.alert('Greška', 'Došlo je do greške prilikom dodavanja iskustva.', [
                     {
                         text: 'OK',
                         onPress: () => {
-                            // Možete ovdje dodati daljnje radnje u slučaju greške
                         },
                     },
                 ]);
@@ -91,7 +64,6 @@ const TravelDiaryScreen = () => {
                 {
                     text: 'OK',
                     onPress: () => {
-                        // Možete ovdje dodati daljnje radnje u slučaju greške
                     },
                 },
             ]);
@@ -128,7 +100,7 @@ const TravelDiaryScreen = () => {
                     <View key={index} style={styles.experienceCard}>
                         {experience.image && (
 
-                            <Image crossOrigin="anonymous" source={{ uri: 'ZGF0YTppbWFnZS9wbmc7YmFzZTY0LGlWQk9SdzBLR2dvQUFBQU5TVWhFVWdBQUFBVUFBQUFGQ0FZQUFBQ05ieWJsQUFBQUhFbEVRVlFJMTJQNC8vOC93MzhHSUFYRElCS0UwREh4Z2xqTkJBQU85VFhMMFk0T0h3QUFBQUJKUlU1RXJrSmdn'}} style={styles.experienceImage} />
+                            <Image crossOrigin="anonymous" source={{ uri: experience.image}} style={styles.experienceImage} />
 
                         )}
                         <Text style={styles.experienceDescription}>{experience.description}</Text>
