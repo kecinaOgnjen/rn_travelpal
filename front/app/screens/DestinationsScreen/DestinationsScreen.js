@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, FlatList, ActivityIndicator, Text, StyleSheet } from 'react-native';
 import DestinationCard from '../../components/DestinationCard/DestinationCard';
-import { destinations } from '../../api/api';
+import {destinations, destinationsAxios} from '../../api/api';
 
 const DestinationsScreen = ({ navigation }) => {
     const [destinationsItems, setDestinationsItems] = useState([]);
@@ -15,7 +15,7 @@ const DestinationsScreen = ({ navigation }) => {
     useEffect(() => {
         const fetchDestinations = async () => {
             try {
-                const response = await destinations.get('/getDestinations');
+                const response = await destinationsAxios.get('/getDestinations');
 
                 if (response.data.isSuccess) {
                     setDestinationsItems(response.data.destinations);

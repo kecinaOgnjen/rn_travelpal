@@ -3,8 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, Dimensions, 
 import { useRoute } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import useCustomWindowDimensions from "../utils/main";
-import { useNavigation } from '@react-navigation/native';
-import {AuthContext} from "../authContext/authContext"; // Importujemo hook za navigaciju
+import {AuthContext} from "../authContext/authContext";
+import {destinationsAxios} from "../api/api"; //
 
 const { width: windowWidth } = Dimensions.get('window');
 
@@ -27,6 +27,7 @@ const HomeScreen = ({ navigation }) => {
 
     const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
     const { width: customWindowWidth } = useCustomWindowDimensions();
+    const [destinations, setDestinations] = useState([]);
 
     const { logout } = useContext(AuthContext);
 
@@ -38,13 +39,11 @@ const HomeScreen = ({ navigation }) => {
         setIsLogoutModalVisible(false);
     };
 
-    // Funkcija za potvrdu odjavljivanja
     const confirmLogout = () => {
         logout();
         closeModal();
         navigation.navigate('LoginScreen');
     };
-
 
     const handleSettings = () => {
         navigation.navigate('UserSettings');
@@ -58,11 +57,16 @@ const HomeScreen = ({ navigation }) => {
         navigation.navigate('DestinationsScreen');
     };
 
+    const handleHome = () => {
+        navigation.navigate('HomeScreen');
+    };
+
     const images = [require('../assets/1.jpeg'), require('../assets/2.jpeg'),  require('../assets/3.jpeg')];
     const flatListRef = useRef(null);
     const imageSliderIntervalRef = useRef(null);
 
     useEffect(() => {
+        fetchDestinations();
         startImageSlider();
 
         return () => {
@@ -70,27 +74,45 @@ const HomeScreen = ({ navigation }) => {
         };
     }, []);
 
-    // Dobijanje pravilne širine ekrana
-    const imageWidth = windowWidth - 40; // Širina slike će biti širina ekrana sa oduzetih 40px zbog margina
-    const imageHeight = imageWidth * (9 / 16); // Visina će biti odnos širine i visine 16:9
+    const fetchDestinations = async () => {
+        try {
+            const response = await destinationsAxios.get('/getDestinations');
+
+            if (response.data.isSuccess) {
+                setDestinations(response.data.destinations);
+            } else {
+                console.log('Došlo je do greške pri dobavljanju destinacija');
+            }
+        } catch (error) {
+            console.error('Greška prilikom dohvaćanja destinacija', error);
+        }
+    };
+
+    const imageWidth = windowWidth - 40;
+    const imageHeight = imageWidth * (9 / 16);
 
     const startImageSlider = () => {
         let currentIndex = 0;
         imageSliderIntervalRef.current = setInterval(() => {
             const nextIndex = currentIndex === images.length - 1 ? 0 : currentIndex + 1;
-            flatListRef.current?.scrollToIndex({ index: nextIndex, animated: true });
+
+            if (nextIndex < destinations.length) {
+                flatListRef.current?.scrollToIndex({ index: nextIndex, animated: true });
+            }
+
             currentIndex = nextIndex;
         }, 3000);
     };
 
-    // Funkcija za prikazivanje pojedinačne slike u slideru
     const renderSliderItem = ({ item }) => (
-        <View style={styles.slide}>
-            <Image source={item} style={[styles.image, { width: imageWidth, height: imageHeight }]} resizeMode="contain" />
-        </View>
+        <TouchableOpacity onPress={() => navigation.navigate('DestinationDetailScreen', { destination: item })}>
+            <View style={styles.slide} >
+                <Image source={{ uri: item.cover_image }} style={[styles.image, { width: imageWidth, height: imageHeight  }]} resizeMode="cover" />
+                <Text style={styles.destinationName}>{item.title}</Text>
+            </View>
+        </TouchableOpacity>
     );
 
-    // Funkcija za prikazivanje modala za odjavljivanje
     const renderLogoutModal = () => (
         <Modal
             animationType="fade"
@@ -108,7 +130,6 @@ const HomeScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-                {/* Podesavanja, Logo i Prijavljivanje/Odjavljivanje */}
                 <View style={styles.headerContainer}>
                     <View style={styles.settingsButtonContainer}>
                         <TouchableOpacity style={styles.settingsButtonContainer} onPress={handleSettings}>
@@ -124,12 +145,10 @@ const HomeScreen = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
                 </View>
-
-            {/* Slider sa slikama */}
             <View style={styles.sliderContainer}>
                 <FlatList
                     ref={flatListRef}
-                    data={images}
+                    data={destinations}
                     renderItem={renderSliderItem}
                     keyExtractor={(item, index) => index.toString()}
                     horizontal
@@ -138,13 +157,10 @@ const HomeScreen = ({ navigation }) => {
                     contentContainerStyle={{ alignItems: 'center' }}
                 />
             </View>
-
-            {/* Navigacija sa 5 stranica */}
             <View style={styles.navigationContainer}>
                 <View style={styles.navIconContainer}>
-                    {/* Dummy ikonice */}
                     <TouchableOpacity style={styles.navIcon}>
-                        <Icon name="home" size={24} color="#fff" />
+                        <Icon name="home" size={24} color="#fff" onPress={handleHome}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.navIcon}>
                         <Icon name="search" size={24} color="#fff" onPress={handleDestination}/>
@@ -189,25 +205,39 @@ const styles = StyleSheet.create({
         borderRadius: 4,
     },
     logoContainer: {
-        flex: 1, // Slika logotipa će zauzeti preostali prostor između ikonica za podešavanje i prijavljivanje
+        flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
     },
+    destinationName: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        marginTop: 10,
+        color: '#fff',
+        textAlign: 'center',
+        flexWrap: 'wrap',
+        lineHeight: 24,
+    },
+    destinationDescription: {
+        fontSize: 16,
+        color: '#fff',
+    },
     logo: {
-        width: 50, // Prilagodite veličinu logotipa prema potrebi
+        width: 50,
         height: 50,
     },
     sliderContainer: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        height: 350,
     },
     slide: {
         marginHorizontal: 20,
     },
     image: {
         width: '100%',
-        aspectRatio: 16 / 9, // Postavljamo odnos širine i visine na 16:9
+        aspectRatio: 16 / 9,
     },
     navigationContainer: {
         position: 'absolute',
@@ -222,7 +252,6 @@ const styles = StyleSheet.create({
     navIcon: {
         paddingHorizontal: 20,
     },
-    // Stilovi za modal
     modalBackdrop: {
         flex: 1,
         backgroundColor: 'rgba(0, 0, 0, 0.7)',

@@ -18,7 +18,7 @@ const userSettingsAxios = axios.create({
     }
 });
 
-const destinations = axios.create({
+const destinationsAxios = axios.create({
     baseURL: "http://192.168.10.109:5000/destinations",
     withCredentials: false,
     headers: {
@@ -36,4 +36,4 @@ const experiencesAxios = axios.create({
     }
 });
 
-export { authAxios, userSettingsAxios, destinations, experiencesAxios };
+export { authAxios, userSettingsAxios, destinationsAxios, experiencesAxios };
