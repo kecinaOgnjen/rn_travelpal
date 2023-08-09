@@ -1,7 +1,10 @@
 import React, {useState} from 'react';
-import {View, Text, Image, StyleSheet, TextInput, TouchableOpacity, ScrollView} from 'react-native';
+import {View, Text, Image, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert} from 'react-native';
 import {Linking} from 'react-native';
 import {destinationsAxios} from "../../api/api";
+import {LOGIN} from "../../utils/consts/consts";
+import * as navigation from "../../utils/RootNavigator";
+import DestinationsScreen from "./DestinationsScreen";
 
 const DestinationDetailScreen = ({route}) => {
     const {destination} = route.params;
@@ -23,6 +26,10 @@ const DestinationDetailScreen = ({route}) => {
                 telefon,
                 detalji
             }).then(response => {
+                if(response.data === 'Email sent successfully'){
+                    Alert.alert("Uspjeh", "Uspješno poslat e-mail!", [{ text: "OK", onPress: () => navigation.navigate(DestinationsScreen) }]);
+
+                }
                 console.log(response.data); // Server će vratiti poruku o uspehu ili grešci
             })
                 .catch(error => {
