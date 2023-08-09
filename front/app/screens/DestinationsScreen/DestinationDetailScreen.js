@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
-import Mailer from 'react-native-mail';
+import {View, Text, Image, StyleSheet, TextInput, TouchableOpacity, ScrollView} from 'react-native';
+import {Linking} from 'react-native';
+import {destinationsAxios} from "../../api/api";
 
-
-const DestinationDetailScreen = ({ route }) => {
-    const { destination } = route.params;
+const DestinationDetailScreen = ({route}) => {
+    const {destination} = route.params;
 
     const [formData, setFormData] = useState({
         ime: '',
@@ -13,26 +13,30 @@ const DestinationDetailScreen = ({ route }) => {
         detalji: '',
     });
 
-    const sendEmail = () => {
-        const { ime, email, telefon, detalji } = formData;
-        const emailSubject = 'Rezervacija za putovanje';
-        const emailBody = `Ime: ${ime}\nEmail: ${email}\nBroj telefona: ${telefon}\nDetalji putovanja: ${detalji}`;
+    const sendEmail = async () => {
+        const {ime, email, telefon, detalji} = formData;
 
-        Mailer.mail({
-            subject: emailSubject,
-            recipients: ['ognjenkecina@gmail.com'],
-            body: emailBody,
-            isHTML: false,
-        }, (error, event) => {
-            if (error) {
-                console.log('Error sending email:', error);
-            }
-        });
+        try {
+            const response = await destinationsAxios.post('/sendEmail', {
+                ime,
+                email,
+                telefon,
+                detalji
+            }).then(response => {
+                console.log(response.data); // Server će vratiti poruku o uspehu ili grešci
+            })
+                .catch(error => {
+                    console.error('Error sending email:', error);
+                });
+
+        } catch (e) {
+            console.log(e)
+        }
     };
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            <Image source={{ uri: destination.image }} style={styles.image} />
+            <Image source={{uri: destination.image}} style={styles.image}/>
             <Text style={styles.title}>{destination.title}</Text>
             <Text style={styles.description}>{destination.long_description}</Text>
             <Text style={styles.location}>{destination.price}</Text>
@@ -44,25 +48,25 @@ const DestinationDetailScreen = ({ route }) => {
                 <TextInput
                     style={styles.input}
                     placeholder="Vaše ime (obavezno)"
-                    onChangeText={(text) => setFormData({ ...formData, ime: text })}
+                    onChangeText={(text) => setFormData({...formData, ime: text})}
                 />
                 <TextInput
                     style={styles.input}
                     placeholder="Vaš Email (obavezno)"
                     keyboardType="email-address"
-                    onChangeText={(text) => setFormData({ ...formData, email: text })}
+                    onChangeText={(text) => setFormData({...formData, email: text})}
                 />
                 <TextInput
                     style={styles.input}
                     placeholder="Broj telefona"
                     keyboardType="phone-pad"
-                    onChangeText={(text) => setFormData({ ...formData, telefon: text })}
+                    onChangeText={(text) => setFormData({...formData, telefon: text})}
                 />
                 <TextInput
-                    style={[styles.input, { height: 100 }]}
+                    style={[styles.input, {height: 100}]}
                     placeholder="Detalji o vašem putovanju (broj polaznika, specijalni zahtjevi)"
                     multiline
-                    onChangeText={(text) => setFormData({ ...formData, detalji: text })}
+                    onChangeText={(text) => setFormData({...formData, detalji: text})}
                 />
             </View>
             <TouchableOpacity style={styles.button} onPress={sendEmail}>
@@ -97,7 +101,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: '#999',
     },
-    // Blue section styles
     blueSection: {
         backgroundColor: '#2c65be',
         padding: 16,
@@ -110,7 +113,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         marginBottom: 8,
     },
-    blueSectionTextContact:{
+    blueSectionTextContact: {
         color: '#FF9',
         fontSize: 15,
         marginBottom: 5,
