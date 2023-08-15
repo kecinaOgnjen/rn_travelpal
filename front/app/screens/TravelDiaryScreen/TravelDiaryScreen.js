@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Image, 
 import * as ImagePicker from 'expo-image-picker';
 import {experiencesAxios} from "../../api/api";
 import base64 from 'base64-js';
+import RNFS from 'react-native-fs';
 
 
 const TravelDiaryScreen = () => {
@@ -25,12 +26,25 @@ const TravelDiaryScreen = () => {
             aspect: [4, 3],
             quality: 1,
         });
-        const base64Image = await FileSystem.readAsStringAsync(result.uri, {
-            encoding: 'base64'
-        });
-        setImage(base64Image);
+
+        RNFS.readFile(result.uri, 'base64')
+            .then(res => {
+
+                console.log({res})
+            });
+
+        return;
+        if (!result.cancelled) {
+            setNewExperience({ ...newExperience, image: result.uri });
+        }
     };
-    console.log(image)
+
+    async function uriToBlob(uri) {
+        const response = await fetch(uri);
+        const blob = await response.blob();
+        return blob;
+    }
+
     const sendExperienceToBackend = async () => {
         try {
             // if (!newExperience.description || newExperience.rating <= 0 || newExperience.rating > 10 || !newExperience.location || !newExperience.image) {
@@ -39,7 +53,7 @@ const TravelDiaryScreen = () => {
             // }
             // console.log(newExperience)
             console.log(image);
-            const response = await experiencesAxios.post('/addExperience', {...newExperience, image: testImage});
+            const response = await experiencesAxios.post('/addExperience', {...newExperience});
 
             if (response.data.isSuccess) {
                 Alert.alert('Uspjeh', 'Iskustvo je uspješno dodato!', [
@@ -88,7 +102,7 @@ const TravelDiaryScreen = () => {
 
 
     useEffect(() => {
-        fetchExperiences();
+        // fetchExperiences();
     }, []);
 
     return (
@@ -96,17 +110,17 @@ const TravelDiaryScreen = () => {
             <Text style={styles.header}>Putnički dnevnik</Text>
 
             <ScrollView style={styles.experiencesContainer}>
-                {experiences.map((experience, index) =>
-                    <View key={index} style={styles.experienceCard}>
-                        {experience.image && (
+                {/*{experiences.map((experience, index) =>*/}
+                {/*    <View key={index} style={styles.experienceCard}>*/}
+                {/*        {experience.image && (*/}
 
-                            <Image crossOrigin="anonymous" source={{ uri: experience.image}} style={styles.experienceImage} />
+                {/*            <Image crossOrigin="anonymous" source={{ uri: experience.image}} style={styles.experienceImage} />*/}
 
-                        )}
-                        <Text style={styles.experienceDescription}>{experience.description}</Text>
-                        <Text style={styles.experienceLocation}>Lokacija: {experience.location}</Text>
-                    </View>
-                )}
+                {/*        )}*/}
+                {/*        <Text style={styles.experienceDescription}>{experience.description}</Text>*/}
+                {/*        <Text style={styles.experienceLocation}>Lokacija: {experience.location}</Text>*/}
+                {/*    </View>*/}
+                {/*)}*/}
             </ScrollView>
 
             <View style={styles.newExperienceContainer}>

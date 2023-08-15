@@ -22,6 +22,43 @@ router.post('/addExperience', async (req, res) => {
         return res.status(400).json({error: 'Nevalidna slika'});
     }
 
+    // Define the path to save the image
+    const path = './uploads/image-' + Date.now() + '.jpg';
+
+    // Create buffer from base64 string
+    const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, "");
+    const dataBuffer = Buffer.from(base64Data, 'base64');
+
+    // Write to file
+    fs.writeFile(path, dataBuffer, function (error) {
+        if (error) {
+            res.status(500).send({ message: 'Error saving image!' });
+        } else {
+            res.status(200).send({ message: 'Image saved successfully', path: path });
+        }
+    });
+
+
+
+    res.json({
+        success: true,
+        id: 1
+    })
+
+});
+
+
+
+router.post('/addExperience-old', async (req, res) => {
+    console.log(req.body);
+
+    const imageBase64 = req.body.image;
+    const { description, location, rate } = req.body;
+
+    if(!imageBase64 || !imageBase64.startsWith('data:image')) {
+        return res.status(400).json({error: 'Nevalidna slika'});
+    }
+
 
     const imageBuffer = Buffer.from(imageBase64, 'base64');
 
@@ -46,6 +83,7 @@ router.post('/addExperience', async (req, res) => {
     })
 
 });
+
 
 router.get('/getExperience', async (req, res) => {
     const result = await pool.query('SELECT * FROM experiences');
