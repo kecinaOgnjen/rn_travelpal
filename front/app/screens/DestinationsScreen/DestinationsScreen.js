@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, ActivityIndicator, Text, StyleSheet, TouchableOpacity, TextInput, Keyboard } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { View, FlatList, ActivityIndicator, Text, StyleSheet, Keyboard } from 'react-native';
 import DestinationCard from '../../components/DestinationCard/DestinationCard';
 import { destinationsAxios } from '../../api/api';
 
@@ -67,42 +66,6 @@ const DestinationsScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-
-            <View style={styles.header}>
-                <Text style={styles.title}>Destinacije</Text>
-                <TouchableOpacity onPress={handleSearchIconPress}>
-                    <Ionicons
-                        name={searchVisible ? 'close' : 'search'}
-                        size={24}
-                        color="white"
-                    />
-                </TouchableOpacity>
-            </View>
-
-            {searchVisible && (
-                <View style={styles.searchContainer}>
-                    <TextInput
-                        style={styles.searchInput}
-                        placeholder="Pretraži destinacije..."
-                        value={searchQuery}
-                        onChangeText={(text) => setSearchQuery(text)}
-                        onSubmitEditing={handleSearchSubmit}
-                    />
-                </View>
-            )}
-
-            {filteredDestinations.length === 0 &&
-                searchQuery.trim() !== '' &&
-                !searchVisible &&
-                (
-                    <View style={styles.noResultsContainer}>
-                        <Text style={styles.noResultsText}>
-                            Nema rezultata pretrage.
-                        </Text>
-                    </View>
-                )
-            }
-
             <FlatList
                 data={filteredDestinations.length > 0 ? filteredDestinations : destinationsItems}
                 keyExtractor={(item) => item.title}
@@ -113,7 +76,6 @@ const DestinationsScreen = ({ navigation }) => {
                     />
                 )}
             />
-
         </View>
     );
 };

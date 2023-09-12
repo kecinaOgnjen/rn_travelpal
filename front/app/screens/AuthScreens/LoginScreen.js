@@ -11,7 +11,7 @@ import {
 import { Fumi } from 'react-native-textinput-effects';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
-import axiosInstance, {authAxios} from '../../api/api';
+import {authAxios} from '../../api/api';
 import { navigateCloseCurrent } from '../../utils/RootNavigator';
 import {HOME, LOGIN} from '../../utils/consts/consts';
 import {showAlert} from "../../utils/main";
@@ -195,10 +195,10 @@ const LoginScreen = () => {
                     </View>
                     <TouchableOpacity
                         style={[
-                            styles.btnRegister, // Ovde koristimo novi stil za dugme
+                            styles.btnRegister,
                             { backgroundColor: '#f39c12' },
                         ]}
-                        onPress={() => navigation.navigate('RegisterScreen')} // Navigacija ka stranici Register
+                        onPress={() => navigation.navigate('RegisterScreen')}
                     >
                         <Text style={styles.textRegister}>Registracija</Text>
                     </TouchableOpacity>

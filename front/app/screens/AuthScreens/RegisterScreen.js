@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
-import axiosInstance, {authAxios} from "../../api/api";
-import {LOGIN} from "../../utils/consts/consts"; // Uvezemo axiosInstance da bismo mogli slati zahtjeve na backend
+import {authAxios} from "../../api/api";
+import {LOGIN} from "../../utils/consts/consts";
 import { Alert } from 'react-native';
 import {showAlert} from "../../utils/main";
 
@@ -11,7 +11,7 @@ const RegisterScreen = ({ navigation }) => {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [registerLoading, setRegisterLoading] = useState(false); // Dodajemo novu varijablu za indikaciju da li je u toku proces registracije
+    const [registerLoading, setRegisterLoading] = useState(false);
 
 
     const [errors, setErrors] = useState({
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
         padding: 13,
         borderRadius: 3,
         alignItems: 'center',
-        backgroundColor: '#3498db', // Plava nijansa (ili bilo koja druga boja po vašem izboru)
+        backgroundColor: '#3498db',
         marginTop: 15,
     },
     textRegister: {

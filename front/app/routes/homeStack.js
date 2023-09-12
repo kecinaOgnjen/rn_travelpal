@@ -18,10 +18,8 @@ import {
 import {navigationRef} from "../utils/RootNavigator";
 
 import LoginScreen from "../screens/AuthScreens/LoginScreen";
-import SplashScreen from "../screens/SplashScreen";
 import HomeScreen from "../screens/HomeScreen";
 import UserSettings from "../screens/UserSettings/UserSettings";
-import TravelDiaryScreen from "../screens/TravelDiaryScreen/TravelDiaryScreen";
 import RegisterScreen from "../screens/AuthScreens/RegisterScreen";
 import {AuthProvider} from "../authContext/authContext";
 import DestinationsScreen from "../screens/DestinationsScreen/DestinationsScreen";
@@ -61,10 +59,6 @@ export default function homeStack(){
                             name={USERSETTINGS}
                             component={UserSettings}
                         />
-                        {/*<Stack.Screen*/}
-                        {/*    name={TRAVELDIARYSCREEN}*/}
-                        {/*    component={TravelDiaryScreen}*/}
-                        {/*/>*/}
                         <Stack.Screen
                             name={REGISTERSCREEN}
                             component={RegisterScreen}

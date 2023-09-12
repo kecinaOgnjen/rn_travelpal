@@ -2,17 +2,16 @@ import React, {useContext, useEffect, useState} from 'react';
 import {View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, ActivityIndicator} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {AuthContext} from "../../authContext/authContext";
-import axiosInstance, {userSettingsAxios} from "../../api/api";
+import {userSettingsAxios} from "../../api/api";
 import {HOME, LOGIN} from "../../utils/consts/consts";
 import * as navigation from "../../utils/RootNavigator";
 
 const UserSettings = () => {
-    // Stanje za čuvanje trenutnih vrednosti korisničkog imena, imena i prezimena, emaila, broja telefona i lozinke
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [password, setPassword] = useState('');
-    const [isPasswordVisible, setIsPasswordVisible] = useState(false); // Dodali smo stanje za praćenje vidljivosti lozinke
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
     const [savedUsername, setSavedUsername] = useState('');
     const [savedEmail, setSavedEmail] = useState('');

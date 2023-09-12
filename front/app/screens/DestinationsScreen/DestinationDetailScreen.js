@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, Image, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert} from 'react-native';
-import {Linking} from 'react-native';
 import {destinationsAxios} from "../../api/api";
-import {LOGIN} from "../../utils/consts/consts";
 import * as navigation from "../../utils/RootNavigator";
 import DestinationsScreen from "./DestinationsScreen";
 
@@ -30,7 +28,7 @@ const DestinationDetailScreen = ({route}) => {
                     Alert.alert("Uspjeh", "Uspješno poslat e-mail!", [{ text: "OK", onPress: () => navigation.navigate(DestinationsScreen) }]);
 
                 }
-                console.log(response.data); // Server će vratiti poruku o uspehu ili grešci
+                console.log(response.data);
             })
                 .catch(error => {
                     console.error('Error sending email:', error);
