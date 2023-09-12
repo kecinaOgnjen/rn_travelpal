@@ -3,7 +3,6 @@ import {View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Image, 
 import * as ImagePicker from 'expo-image-picker';
 import {experiencesAxios} from "../../api/api";
 import base64 from 'base64-js';
-import RNFS from 'react-native-fs';
 
 
 const TravelDiaryScreen = () => {

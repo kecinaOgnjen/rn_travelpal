@@ -49,10 +49,6 @@ export default function homeStack(){
                             headerShown: false
                         }}
                         initalRouteName={LOGIN}>
-                        {/*<Stack.Screen*/}
-                        {/*    name={SPLASHSCREEN}*/}
-                        {/*    component={SplashScreen}*/}
-                        {/*/>*/}
                         <Stack.Screen
                             name={LOGIN}
                             component={LoginScreen}
@@ -65,10 +61,10 @@ export default function homeStack(){
                             name={USERSETTINGS}
                             component={UserSettings}
                         />
-                        <Stack.Screen
-                            name={TRAVELDIARYSCREEN}
-                            component={TravelDiaryScreen}
-                        />
+                        {/*<Stack.Screen*/}
+                        {/*    name={TRAVELDIARYSCREEN}*/}
+                        {/*    component={TravelDiaryScreen}*/}
+                        {/*/>*/}
                         <Stack.Screen
                             name={REGISTERSCREEN}
                             component={RegisterScreen}
