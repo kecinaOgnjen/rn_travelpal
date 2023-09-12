@@ -16,11 +16,12 @@ buildscript {
     }
     repositories {
         google()
-        mavenCentral()
+        maven { url 'https://developer.huawei.com/repo/' }
     }
     dependencies {
         classpath('com.android.tools.build:gradle:7.4.1')
         classpath('com.facebook.react:react-native-gradle-plugin')
+         classpath 'com.huawei.agconnect:agcp:1.5.2.300'
     }
 }
 
@@ -37,6 +38,7 @@ allprojects {
 
         google()
         mavenCentral()
-        maven { url 'https://www.jitpack.io' }
+//         maven { url 'https://www.jitpack.io' }
+        maven { url 'https://developer.huawei.com/repo/' }
     }
 }

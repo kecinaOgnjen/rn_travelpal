@@ -17,7 +17,7 @@ import {HOME, LOGIN} from '../../utils/consts/consts';
 import {showAlert} from "../../utils/main";
 import {AuthContext} from "../../authContext/authContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import HmsPushInstanceId from "@hmscore/react-native-hms-push";
+// import HmsPushInstanceId from "@hmscore/react-native-hms-push";
 
 const LoginScreen = () => {
     const [expoToken, setExpoToken] = useState(null);
@@ -34,36 +34,36 @@ const LoginScreen = () => {
 
     const { handleLogin } = useContext(AuthContext);
 
-    useEffect(() => {
-        const getNotificationToken = async () => {
-            let expoNotificationToken = await AsyncStorage.getItem("huaweiToken");
-            if (expoNotificationToken) {
-                console.log("HAS_TOKEN_STORAGE");
-                setExpoToken(expoNotificationToken);
-            }
-            if (!expoNotificationToken) {
-                console.log("NO_TOKEN_IN_STORAGE");
-                try {
-                    HmsPushInstanceId.getToken("")
-                        .then((result) => {
-                            console.log("NEW_TOKEN", result);
-                            expoNotificationToken =  Object.values(result)[0];
-                            if (expoNotificationToken) {
-                                console.log("SETTING_NEW_TOKEN", expoNotificationToken);
-                                setExpoToken(expoNotificationToken);
-                            }
-                        })
-                        .catch((err) => {
-                            alert("[getToken] Error/Exception: " + JSON.stringify(err));
-                        });
-                } catch (error) {
-                    console.log(error)
-                }
-            }
-        };
-
-        getNotificationToken();
-    }, [expoToken]);
+    // useEffect(() => {
+    //     const getNotificationToken = async () => {
+    //         let expoNotificationToken = await AsyncStorage.getItem("huaweiToken");
+    //         if (expoNotificationToken) {
+    //             console.log("HAS_TOKEN_STORAGE");
+    //             setExpoToken(expoNotificationToken);
+    //         }
+    //         if (!expoNotificationToken) {
+    //             console.log("NO_TOKEN_IN_STORAGE");
+    //             try {
+    //                 HmsPushInstanceId.getToken("")
+    //                     .then((result) => {
+    //                         console.log("NEW_TOKEN", result);
+    //                         expoNotificationToken =  Object.values(result)[0];
+    //                         if (expoNotificationToken) {
+    //                             console.log("SETTING_NEW_TOKEN", expoNotificationToken);
+    //                             setExpoToken(expoNotificationToken);
+    //                         }
+    //                     })
+    //                     .catch((err) => {
+    //                         alert("[getToken] Error/Exception: " + JSON.stringify(err));
+    //                     });
+    //             } catch (error) {
+    //                 console.log(error)
+    //             }
+    //         }
+    //     };
+    //
+    //     getNotificationToken();
+    // }, [expoToken]);
 
     const login = async () => {
         if (username === '' && password === '') {

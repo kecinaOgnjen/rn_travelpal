@@ -1,5 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
+apply plugin: 'com.huawei.agconnect'
 
 import com.android.build.OutputFile
 
@@ -190,9 +191,10 @@ android {
 }
 
 dependencies {
+    implementation 'com.huawei.agconnect:agconnect-core:1.5.2.300'
+    implementation 'com.huawei.hms:push:6.9.0.300'
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-    implementation project(':react-native-fs')
 
 
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";
