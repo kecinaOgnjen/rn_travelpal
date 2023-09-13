@@ -129,11 +129,11 @@ const HomeScreen = ({ navigation }) => {
                 <View style={styles.headerContainer}>
                     <View style={styles.settingsButtonContainer}>
                         <TouchableOpacity style={styles.settingsButtonContainer} onPress={handleSettings}>
-                        {/*<Icon name="user" size={24} color="#fff" />*/}
-                            <Image
-                                source={require('../assets/user-solid.png')}
-                                style={styles.userIconHome}
-                            />
+                        <Icon name="user" size={24} color="#fff" />
+                        {/*    <Image*/}
+                        {/*        source={require('../assets/user-solid.png')}*/}
+                        {/*        style={styles.userIconHome}*/}
+                        {/*    />*/}
                         </TouchableOpacity>
                     </View>
                     <View style={styles.logoContainer}>
@@ -141,11 +141,11 @@ const HomeScreen = ({ navigation }) => {
                     </View>
                     <View style={styles.logoutButtonContainer}>
                         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-                            {/*<Icon name="sign-out" size={24} color="#fff" />*/}
-                            <Image
-                                source={require('../assets/sign-out.png')}
-                                style={styles.userIconHome}
-                            />
+                            <Icon name="sign-out" size={24} color="#fff" />
+                            {/*<Image*/}
+                            {/*    source={require('../assets/sign-out.png')}*/}
+                            {/*    style={styles.userIconHome}*/}
+                            {/*/>*/}
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -164,20 +164,20 @@ const HomeScreen = ({ navigation }) => {
             <View style={styles.navigationContainer}>
                 <View style={styles.navIconContainer}>
                     <TouchableOpacity style={styles.navIcon}  onPress={handleHome}>
-                        {/*<Icon name="home" size={24} color="#fff" onPress={handleHome}/>*/}
-                        <Image
-                            source={require('../assets/home.png')} // Replace with the correct path to your PNG image
-                            style={styles.userIconHome}
+                        <Icon name="home" size={24} color="#fff" onPress={handleHome}/>
+                        {/*<Image*/}
+                        {/*    source={require('../assets/home.png')} // Replace with the correct path to your PNG image*/}
+                        {/*    style={styles.userIconHome}*/}
 
-                        />
+                        {/*/>*/}
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.navIcon} onPress={handleDestination}>
-                        {/*<Icon name="search" size={24} color="#fff" onPress={handleDestination}/>*/}
-                        <Image
-                            source={require('../assets/search.png')} // Replace with the correct path to your PNG image
-                            style={styles.userIconHome}
+                        <Icon name="search" size={24} color="#fff" onPress={handleDestination}/>
+                        {/*<Image*/}
+                        {/*    source={require('../assets/search.png')} // Replace with the correct path to your PNG image*/}
+                        {/*    style={styles.userIconHome}*/}
 
-                        />
+                        {/*/>*/}
                     </TouchableOpacity>
                 </View>
             </View>

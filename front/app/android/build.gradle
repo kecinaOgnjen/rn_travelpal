@@ -18,7 +18,7 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
-          classpath 'com.huawei.agconnect:agcp:1.5.2.300'
+//           classpath 'com.huawei.agconnect:agcp:1.5.2.300'
     }
 }
 // allprojects {

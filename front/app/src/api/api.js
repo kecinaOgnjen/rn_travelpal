@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const authAxios  = axios.create({
-    baseURL: "http://192.168.0.12:5000/auth",
+    baseURL: "http://192.168.10.109:5000/auth",
     withCredentials: false,
     headers: {
         'Access-Control-Allow-Origin' : '*',
@@ -10,7 +10,7 @@ const authAxios  = axios.create({
 });
 
 const userSettingsAxios = axios.create({
-    baseURL: "http://192.168.0.12:5000/userSettings",
+    baseURL: "http://192.168.10.109:5000/userSettings",
     withCredentials: false,
     headers: {
         'Access-Control-Allow-Origin' : '*',
@@ -19,7 +19,7 @@ const userSettingsAxios = axios.create({
 });
 
 const destinationsAxios = axios.create({
-    baseURL: "http://192.168.0.12:5000/destinations",
+    baseURL: "http://192.168.10.109:5000/destinations",
     withCredentials: false,
     headers: {
         'Access-Control-Allow-Origin' : '*',

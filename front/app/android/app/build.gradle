@@ -1,6 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
-apply plugin: 'com.huawei.agconnect'
+// apply plugin: 'com.huawei.agconnect'
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -105,8 +105,8 @@ android {
 }
 
 dependencies {
- implementation 'com.huawei.agconnect:agconnect-core:1.5.2.300'
-    implementation 'com.huawei.hms:push:6.9.0.300'
+//  implementation 'com.huawei.agconnect:agconnect-core:1.5.2.300'
+//     implementation 'com.huawei.hms:push:6.9.0.300'
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
 
