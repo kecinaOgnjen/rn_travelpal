@@ -10,6 +10,8 @@
     "test": "jest"
   },
   "dependencies": {
+    "@hmscore/react-native-hms-push": "^6.10.0-300",
+    "@react-native-async-storage/async-storage": "~1.19.3",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@react-native-community/slider": "^4.4.2",

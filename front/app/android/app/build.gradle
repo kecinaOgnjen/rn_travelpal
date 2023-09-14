@@ -1,6 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
-// apply plugin: 'com.huawei.agconnect'
+apply plugin: 'com.huawei.agconnect'
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -74,39 +74,46 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.app"
+    namespace "com.travelpal"
     defaultConfig {
-        applicationId "com.app"
+        applicationId "com.travelpal"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
     }
     signingConfigs {
-        debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
+//         debug {
+//             storeFile file('keystore.jks')
+//             storePassword 'travelpal'
+//             keyAlias 'travelpal'
+//             keyPassword 'travelpal'
+//         }
+ release {
+            storeFile file('keystore.jks')
+            storePassword 'travelpal'
+            keyAlias 'travelpal'
+            keyPassword 'travelpal'
         }
     }
     buildTypes {
-        debug {
-            signingConfig signingConfigs.debug
-        }
+//         debug {
+//             signingConfig signingConfigs.debug
+//         }
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
+             crunchPngs false
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
 }
 
 dependencies {
-//  implementation 'com.huawei.agconnect:agconnect-core:1.5.2.300'
-//     implementation 'com.huawei.hms:push:6.9.0.300'
+ implementation 'com.huawei.agconnect:agconnect-core:1.5.2.300'
+    implementation 'com.huawei.hms:push:6.9.0.300'
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
 

@@ -16,13 +16,13 @@ buildscript {
         maven { url 'https://developer.huawei.com/repo/' }
     }
     dependencies {
-        classpath("com.android.tools.build:gradle")
+        classpath 'com.android.tools.build:gradle:7.0.0'
         classpath("com.facebook.react:react-native-gradle-plugin")
-//           classpath 'com.huawei.agconnect:agcp:1.5.2.300'
+          classpath 'com.huawei.agconnect:agcp:1.5.2.300'
     }
 }
-// allprojects {
-//     repositories {
+allprojects {
+    repositories {
 //         maven {
 //             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
 //             url(new File(['node', '--print', "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim(), '../android'))
@@ -35,6 +35,6 @@ buildscript {
 //         google()
 //         mavenCentral()
 //         maven { url 'https://www.jitpack.io' }
-//         maven { url 'https://developer.huawei.com/repo/' }
-//     }
-// }
+        maven { url 'https://developer.huawei.com/repo/' }
+    }
+}

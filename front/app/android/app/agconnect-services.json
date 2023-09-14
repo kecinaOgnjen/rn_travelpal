@@ -27,20 +27,20 @@
 	},
 	"client":{
 		"cp_id":"30382000024164845",
-		"product_id":"388421841221678637",
-		"client_id":"1244171542963735488",
-		"client_secret":"2101ADC1C2A400D72A1530FCD11AC7A6AD2B8D594342E03CC6FCCE17BAF7D312",
-		"project_id":"388421841221678637",
-		"app_id":"109178783",
-		"api_key":"DAEDAGXZmb9DttRxhgoHxcGHI+y/nQQoeuqTLrt8FHLRXePTqVm08wHDdq+EZ17nj888CCjUhEeP8wryhHHR4JkXLLcg+twmROAmWw==",
+		"product_id":"388421841221681295",
+		"client_id":"1244939523876515648",
+		"client_secret":"105D336A396129896A7C05D713A64B59E9B1790871DA4170D3B1388BFAEF9F1A",
+		"project_id":"388421841221681295",
+		"app_id":"109186799",
+		"api_key":"DAEDAFVi8TGsxDMJZi4CTwQGz6obliJRKEzQ6RDiay8U0YcBLORKsK5OZe7tGF2lGN6reRBjSqNwifkhmUszkxiKGY2IjppJA3sURA==",
 		"package_name":"com.travelpal"
 	},
 	"oauth_client":{
-		"client_id":"109178783",
+		"client_id":"109186799",
 		"client_type":1
 	},
 	"app_info":{
-		"app_id":"109178783",
+		"app_id":"109186799",
 		"package_name":"com.travelpal"
 	},
 	"service":{
@@ -81,15 +81,15 @@
 		{
 			"package_name":"com.travelpal",
 			"client":{
-				"app_id":"109178783"
+				"app_id":"109186799"
 			},
 			"app_info":{
 				"package_name":"com.travelpal",
-				"app_id":"109178783"
+				"app_id":"109186799"
 			},
 			"oauth_client":{
 				"client_type":1,
-				"client_id":"109178783"
+				"client_id":"109186799"
 			}
 		}
 	]
