@@ -63,7 +63,7 @@ const HomeScreen = ({ navigation }) => {
 
     useEffect(() => {
         fetchDestinations();
-        startImageSlider();
+        // startImageSlider();
 
         return () => {
             clearInterval(imageSliderIntervalRef.current);
@@ -133,7 +133,7 @@ const HomeScreen = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.logoContainer}>
-                        <Image source={require('../assets/logo.png')} style={styles.logo} />
+                        <Image source={require('../assets/logo.jpeg')} style={styles.logo} />
                     </View>
                     <View style={styles.logoutButtonContainer}>
                         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
         height: 350,
     },
     slide: {
-        marginHorizontal: 20,
+        marginHorizontal: 18,
     },
     image: {
         width: '100%',
@@ -255,11 +255,13 @@ const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: '#fff',
         borderRadius: 8,
+        color: '#000'
     },
     modalText: {
         fontSize: 18,
         marginBottom: 20,
         textAlign: 'center',
+        color: '#000'
     },
     modalButtonsContainer: {
         flexDirection: 'row',

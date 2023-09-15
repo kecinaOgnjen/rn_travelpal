@@ -121,7 +121,7 @@ const LoginScreen = () => {
                     <View style={styles.imageView}>
                         <Image
                             style={styles.logo}
-                            source={require('../../assets/logo.png')}
+                            source={require('../../assets/logo.jpeg')}
                         />
                     </View>
 
@@ -192,9 +192,9 @@ const LoginScreen = () => {
                             justifyContent: 'flex-end',
                         }}
                     >
-                        <Text style={{ color: '#fff' }} selectable={true}>
-                            {expoToken}
-                        </Text>
+                        {/*<Text style={{ color: '#fff' }} selectable={true}>*/}
+                        {/*    {expoToken}*/}
+                        {/*</Text>*/}
                     </View>
                     <TouchableOpacity
                         style={[
