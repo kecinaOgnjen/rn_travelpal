@@ -31,11 +31,13 @@ const styles = StyleSheet.create({
     content: {
         marginLeft: 16,
         flex: 1,
+        color: '#000000'
     },
     title: {
         fontSize: 18,
         fontWeight: 'bold',
         textAlign: 'center',
+        color: '#000000'
     },
     description: {
         marginTop: 4,

@@ -79,24 +79,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         color: '#fff'
-    },
-    searchContainer: {
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        paddingHorizontal: 16,
-        marginBottom: 10
-    },
-    searchInput: {
-        color: 'white',
-        paddingVertical: 10
-    },
-    noResultsContainer: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingVertical: 10
-    },
-    noResultsText: {
-        fontSize: 18,
-        color: 'white'
     }
 });
 

@@ -12,7 +12,6 @@ import {
     Platform
 } from 'react-native';
 import {destinationsAxios} from "../../api/api";
-import {LOGIN} from "../../utils/consts/consts";
 import * as navigation from "../../utils/RootNavigator";
 import DestinationsScreen from "./DestinationsScreen";
 
@@ -51,46 +50,33 @@ const DestinationDetailScreen = ({route}) => {
         }
     };
 
-    const handleOpenMap = () => {
-        const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
-        const latLng = destination.hotelLocation;
-        const label = destination.hotelName;
-        const url = Platform.select({
-            ios: `${scheme}${label}@${latLng}`,
-            android: `${scheme}${latLng}(${label})`
-        });
-
-        Linking.openURL(url);
-    };
-
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <Image source={{uri: destination.image}} style={styles.image}/>
             <Text style={styles.title}>{destination.title}</Text>
             <Text style={styles.description}>{destination.long_description}</Text>
-            <TouchableOpacity onPress={handleOpenMap}>
-                <Text>Otvori mapu</Text>
-            </TouchableOpacity>
             <Text style={styles.location}>{destination.price}</Text>
             <View style={styles.blueSection}>
-                <Text style={styles.blueSectionText}>Rezervacija mjesta</Text>
                 <Text style={styles.blueSectionTextContact}>Kontaktirajte nas</Text>
             </View>
             <View style={styles.nonBlueSection}>
                 <TextInput
                     style={styles.input}
                     placeholder="Vaše ime (obavezno)"
+                    placeholderTextColor="#666"
                     onChangeText={(text) => setFormData({...formData, ime: text})}
                 />
                 <TextInput
                     style={styles.input}
                     placeholder="Vaš Email (obavezno)"
+                    placeholderTextColor="#666"
                     keyboardType="email-address"
                     onChangeText={(text) => setFormData({...formData, email: text})}
                 />
                 <TextInput
                     style={styles.input}
                     placeholder="Broj telefona"
+                    placeholderTextColor="#666"
                     keyboardType="phone-pad"
                     onChangeText={(text) => setFormData({...formData, telefon: text})}
                 />
@@ -98,6 +84,7 @@ const DestinationDetailScreen = ({route}) => {
                     style={[styles.input, {height: 100}]}
                     placeholder="Detalji o vašem putovanju (broj polaznika, specijalni zahtjevi)"
                     multiline
+                    placeholderTextColor="#666"
                     onChangeText={(text) => setFormData({...formData, detalji: text})}
                 />
             </View>
@@ -122,6 +109,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         marginTop: 16,
+        color: '#666',
     },
     description: {
         marginTop: 8,
@@ -158,6 +146,7 @@ const styles = StyleSheet.create({
         padding: 10,
         marginBottom: 8,
         borderRadius: 4,
+        color: 'white',
     },
     button: {
         backgroundColor: '#2c65be',
