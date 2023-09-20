@@ -7,9 +7,7 @@ import {
     TextInput,
     TouchableOpacity,
     ScrollView,
-    Alert,
-    Linking,
-    Platform
+    Alert
 } from 'react-native';
 import {destinationsAxios} from "../../api/api";
 import * as navigation from "../../utils/RootNavigator";
@@ -30,30 +28,30 @@ const DestinationDetailScreen = ({route}) => {
         if (ime === '' || email === '' || telefon === '' || detalji === '') {
             Alert.alert("Greška", "Morate popuniti podatke!", [{text: "OK"}]);
         } else {
-        try {
-            const response = await destinationsAxios.post('/sendEmail', {
-                ime,
-                email,
-                telefon,
-                detalji
-            }).then(response => {
-                if (response.data === 'Email sent successfully') {
-                    Alert.alert("Uspjeh", "Uspješno poslat e-mail!", [{
-                        text: "OK",
-                        onPress: () => navigation.navigate(DestinationsScreen)
-                    }]);
+            try {
+                const response = await destinationsAxios.post('/sendEmail', {
+                    ime,
+                    email,
+                    telefon,
+                    detalji
+                }).then(response => {
+                    if (response.data === 'Email sent successfully') {
+                        Alert.alert("Uspjeh", "Uspješno poslat e-mail!", [{
+                            text: "OK",
+                            onPress: () => navigation.navigate(DestinationsScreen)
+                        }]);
 
-                }
-                console.log(response.data); // Server će vratiti poruku o uspehu ili grešci
-            })
-                .catch(error => {
-                    console.error('Error sending email:', error);
-                });
+                    }
+                    console.log(response.data);
+                })
+                    .catch(error => {
+                        console.error('Error sending email:', error);
+                    });
 
-        } catch (e) {
-            console.log(e)
+            } catch (e) {
+                console.log(e)
+            }
         }
-    }
     };
 
     return (
