@@ -27,7 +27,9 @@ const DestinationDetailScreen = ({route}) => {
 
     const sendEmail = async () => {
         const {ime, email, telefon, detalji} = formData;
-
+        if (ime === '' || email === '' || telefon === '' || detalji === '') {
+            Alert.alert("Greška", "Morate popuniti podatke!", [{text: "OK"}]);
+        } else {
         try {
             const response = await destinationsAxios.post('/sendEmail', {
                 ime,
@@ -35,8 +37,11 @@ const DestinationDetailScreen = ({route}) => {
                 telefon,
                 detalji
             }).then(response => {
-                if(response.data === 'Email sent successfully'){
-                    Alert.alert("Uspjeh", "Uspješno poslat e-mail!", [{ text: "OK", onPress: () => navigation.navigate(DestinationsScreen) }]);
+                if (response.data === 'Email sent successfully') {
+                    Alert.alert("Uspjeh", "Uspješno poslat e-mail!", [{
+                        text: "OK",
+                        onPress: () => navigation.navigate(DestinationsScreen)
+                    }]);
 
                 }
                 console.log(response.data); // Server će vratiti poruku o uspehu ili grešci
@@ -48,6 +53,7 @@ const DestinationDetailScreen = ({route}) => {
         } catch (e) {
             console.log(e)
         }
+    }
     };
 
     return (
