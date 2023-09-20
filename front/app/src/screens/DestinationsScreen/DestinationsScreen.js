@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, FlatList, ActivityIndicator, Text, StyleSheet, TouchableOpacity, TextInput, Keyboard } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 import DestinationCard from '../../components/DestinationCard/DestinationCard';
 import { destinationsAxios } from '../../api/api';
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const DestinationsScreen = ({ navigation }) => {
     const [destinationsItems, setDestinationsItems] = useState([]);
@@ -34,6 +35,24 @@ const DestinationsScreen = ({ navigation }) => {
         fetchDestinations();
     }, []);
 
+    const handleSearch = (query) => {
+        setSearchQuery(query);
+        const filtered = destinationsItems.filter(dest => dest.title.toLowerCase().includes(query.toLowerCase()));
+        setFilteredDestinations(filtered);
+    }
+
+    const clearSearch = () => {
+        setSearchVisible(false);
+        setSearchQuery('');
+        setFilteredDestinations([]);
+        Keyboard.dismiss();
+    }
+
+    const noDataMessage =
+        searchQuery && filteredDestinations.length === 0
+            ? <Text style={styles.noDataText}>Nema podataka za "{searchQuery}"</Text>
+            : null;
+
     if(loading) {
         return (
             <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -47,9 +66,30 @@ const DestinationsScreen = ({ navigation }) => {
 
             <View style={styles.header}>
                 <Text style={styles.title}>Destinacije</Text>
+                {searchVisible ? (
+                    <View style={styles.searchContainer}>
+                        <TextInput
+                            style={styles.searchContainerInput}
+                            value={searchQuery}
+                            onChangeText={(text) => handleSearch(text)}
+                            autoFocus
+                            placeholder="Pretraga..."
+                        />
+                        <TouchableOpacity onPress={clearSearch}>
+                            <Icon name="close" size={20} color="#666" />
+                        </TouchableOpacity>
+                    </View>
+                ) : (
+                    <TouchableOpacity onPress={() => setSearchVisible(true)}>
+                        <Icon name="search" size={20} color="#fff" />
+                    </TouchableOpacity>
+                )}
             </View>
+
+            {noDataMessage}
+
             <FlatList
-                data={destinationsItems}
+                data={searchQuery ? filteredDestinations : destinationsItems}
                 keyExtractor={(item) => item.title}
                 renderItem={({ item }) => (
                     <DestinationCard
@@ -79,6 +119,20 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         color: '#fff'
+    },
+    searchContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        padding: 8,
+        borderRadius: 4
+    },
+    searchContainerInput: {
+        color: '#000'
+    },
+    noDataText: {
+        marginVertical: 20,
+        textAlign: 'center'
     }
 });
 
