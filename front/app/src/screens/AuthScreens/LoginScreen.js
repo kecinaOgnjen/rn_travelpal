@@ -185,17 +185,17 @@ const LoginScreen = () => {
                             )}
                         </TouchableOpacity>
                     </View>
-                    <View
-                        style={{
-                            flex: 1,
-                            alignItems: 'center',
-                            justifyContent: 'flex-end',
-                        }}
-                    >
-                        {/*<Text style={{ color: '#fff' }} selectable={true}>*/}
-                        {/*    {expoToken}*/}
-                        {/*</Text>*/}
-                    </View>
+                    {/*<View*/}
+                    {/*    style={{*/}
+                    {/*        flex: 1,*/}
+                    {/*        alignItems: 'center',*/}
+                    {/*        justifyContent: 'flex-end',*/}
+                    {/*    }}*/}
+                    {/*>*/}
+                    {/*    <Text style={{ color: '#fff' }} selectable={true}>*/}
+                    {/*        {expoToken}*/}
+                    {/*    </Text>*/}
+                    {/*</View>*/}
                     <TouchableOpacity
                         style={[
                             styles.btnRegister,
