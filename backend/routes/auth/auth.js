@@ -28,13 +28,14 @@ router.route('/login').post(async function (req, res) {
             retVal.message = 'Password is not valid';
             return res.status(200).json(retVal);
         }
-
-        // Očitavamo ID novog korisnika iz rezultata INSERT upita
         const userId = user_db.id;
 
         const token = jwt.sign({
-            username: username,
-        }, config.serverSecretKey, {expiresIn: '365d'});
+                username: username,
+            },
+            config.serverSecretKey,
+            {expiresIn: '365d'}
+        );
         retVal.idToken = token;
         retVal.userId = userId;
         retVal.isSuccess = true;
@@ -47,15 +48,15 @@ router.route('/login').post(async function (req, res) {
 });
 
 router.route('/register').post(async function (req, res) {
-    let retVal = {isSuccess: false };
+    let retVal = {isSuccess: false};
     try {
         if (!req.body) {
             res.status(200).json(retVal);
             return;
         }
-        const { fullName, username, password, email, phoneNumber } = req.body;
+        const {fullName, username, password, email, phoneNumber} = req.body;
 
-        const { rows } = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
+        const {rows} = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
         if (rows && rows.length > 0) {
             retVal.message = 'Korisničko ime je već zauzeto.';
             return res.status(200).json(retVal);
@@ -64,14 +65,13 @@ router.route('/register').post(async function (req, res) {
         const insertQuery = 'INSERT INTO users (full_name, username, password, email, phone_number) VALUES ($1, $2, $3, $4, $5) RETURNING id';
         const result = await pool.query(insertQuery, [fullName, username, password, email, phoneNumber]);
 
-        // Očitavamo ID novog korisnika iz rezultata INSERT upita
         const userId = result.rows[0].id;
 
         retVal.isSuccess = true;
-        retVal.userId = userId; // Dodajemo ID korisnika u odgovor
+        retVal.userId = userId;
         res.status(200).json(retVal);
     } catch (err) {
-        console.log({ registerError: err.message });
+        console.log({registerError: err.message});
         retVal.message = err.message;
         res.status(200).json(retVal);
     }

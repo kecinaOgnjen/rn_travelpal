@@ -9,7 +9,6 @@ const {query} = require("express");
 const path = require('path');
 const nodemailer = require('nodemailer');
 
-
 router.route('/getDestinations').get(async function (req, res) {
     let retVal = { isSuccess: false };
 
@@ -31,7 +30,6 @@ router.route('/getDestinations').get(async function (req, res) {
     }
 });
 
-// Konfiguracija za slanje emaila pomoću nodemailer-a
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -46,11 +44,10 @@ router.route('/sendEmail').post(async function (req, res) {
     try{
         const mailOptions = {
             from: 'ognjenkecina@gmail.com',
-            to: email, // Adresa na koju treba da stigne email
+            to: email,
             subject: 'Rezervacija za putovanje',
             text: `Ime: ${ime}\nBroj telefona: ${telefon}\nDetalji putovanja: ${detalji}`
         };
-
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 console.error('Error sending email:', error);
