@@ -132,7 +132,8 @@ const styles = StyleSheet.create({
     },
     noDataText: {
         marginVertical: 20,
-        textAlign: 'center'
+        textAlign: 'center',
+        color: '#fff'
     }
 });
 
