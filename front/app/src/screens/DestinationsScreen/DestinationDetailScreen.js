@@ -33,23 +33,24 @@ const DestinationDetailScreen = ({route}) => {
                     ime,
                     email,
                     telefon,
-                    detalji
+                    detalji,
+                    destinationDetails: destination.long_description,
+                    destinationTitle: destination.title,
+                    destinationImage: destination.image,
+                    destinationPrice: destination.price
                 }).then(response => {
                     if (response.data === 'Email sent successfully') {
                         Alert.alert("Uspjeh", "Uspješno poslat e-mail!", [{
                             text: "OK",
                             onPress: () => navigation.navigate(DestinationsScreen)
                         }]);
-
                     }
                     console.log(response.data);
-                })
-                    .catch(error => {
-                        console.error('Error sending email:', error);
-                    });
-
+                }).catch(error => {
+                    console.error('Error sending email:', error);
+                });
             } catch (e) {
-                console.log(e)
+                console.log(e);
             }
         }
     };
@@ -150,7 +151,7 @@ const styles = StyleSheet.create({
         padding: 10,
         marginBottom: 8,
         borderRadius: 4,
-        color: 'white',
+        color: 'black',
     },
     button: {
         backgroundColor: '#2c65be',

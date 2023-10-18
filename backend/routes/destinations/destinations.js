@@ -62,15 +62,25 @@ const transporter = nodemailer.createTransport({
 });
 
 router.route('/sendEmail').post(async function (req, res) {
-    const { ime, email, telefon, detalji } = req.body;
+    const { ime, email, telefon, detalji, destinationDetails, destinationTitle, destinationImage, destinationPrice } = req.body;
 
-    try{
+    try {
         const mailOptions = {
             from: 'ognjenkecina@gmail.com',
             to: email,
             subject: 'Rezervacija za putovanje',
-            text: `Ime: ${ime}\nBroj telefona: ${telefon}\nDetalji putovanja: ${detalji}`
+            html: `
+                <h1>Detalji destinacije</h1>
+                <img src="${destinationImage}" alt="${destinationTitle}" />
+                <p>${destinationDetails}</p>
+                <p>Cena: ${destinationPrice}</p>
+                <h1>Kontakt informacije</h1>
+                <p>Ime: ${ime}</p>
+                <p>Broj telefona: ${telefon}</p>
+                <p>Detalji putovanja: ${detalji}</p>
+            `
         };
+
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 console.error('Error sending email:', error);
@@ -80,9 +90,10 @@ router.route('/sendEmail').post(async function (req, res) {
                 res.send('Email sent successfully');
             }
         });
-    }catch (e){
-        console.log(e)
+    } catch (e) {
+        console.log(e);
     }
-})
+});
+
 
 module.exports = router;
