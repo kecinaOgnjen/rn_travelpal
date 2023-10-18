@@ -30,6 +30,29 @@ router.route('/getDestinations').get(async function (req, res) {
     }
 });
 
+router.route('/getSingleDestination').get(async function (req, res) {
+    let retVal = { isSuccess: false };
+
+    const { city } = req.query;
+
+    try {
+        const { rows } = await pool.query('SELECT * FROM destinations WHERE city = $1', [city]);
+
+        if (rows && rows.length > 0) {
+            retVal.isSuccess = true;
+            retVal.destination = rows[0];
+            return res.status(200).json(retVal);
+        } else {
+            retVal.message = 'Nema dostupne destinacije za dati grad.';
+            return res.status(404).json(retVal);
+        }
+    } catch (err) {
+        console.log({ getSingleDestinationError: err.message });
+        retVal.message = err.message;
+        res.status(500).json(retVal);
+    }
+});
+
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
